@@ -56,7 +56,7 @@ class Text(models.Model):
     body = models.TextField()
     date_added = models.DateTimeField(null=False, default=timezone.now)
     text_id = models.AutoField(primary_key=True)  # Not needed; Django adds automatically
-    user = models.ForeignKey(User, on_delete=models.CASCADE, db_constraint=True, related_name="texts")  # db_costraint True by default, says constraint SHOULD be created
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, db_constraint=True, related_name="texts")  # db_costraint True by default, says constraint SHOULD be created
 
 
 

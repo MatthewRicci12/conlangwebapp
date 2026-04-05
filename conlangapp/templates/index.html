@@ -1,18 +1,52 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>
-    </head>
-<div id="text-list">
-  <h2>Text 1</h2>
-  <p>This is the body of the text, and I want it to cut off...</p>
-  <h2>Text 2</h2>
-  <p>This is the body of the text, and I want it to cut off...</p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Conlang App</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <!--So I can use CSRF tokens in more than just forms.-->
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <script>
+      document.addEventListener('htmx:configRequest', function(evt) {
+        evt.detail.headers['X-CSRFToken'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      });
+    </script>
+</head>
+<body>
+
+<div id="tabs">
+  <button>Tab 1</button>
+  <button>Tab 2</button>
 </div>
 
-<div id="enter-text">
-  <h1>Enter your first text here</h1>
-  <textarea rows="10" cols="50" placeholder="Enter your text here..." style="font-family: Arial; font-size: 14px; padding: 10px;"></textarea>
+<div id="text_list">
+    {% if texts %}
+        {% for text in texts %}
+            {% include 'partials/text-entry.html' %}
+        {% endfor %}
+    {% endif %}
 </div>
 
+
+<form id="submit_text_form" hx-post="{% url 'submit-text' %}" hx-target="#text_list" hx-swap="afterbegin">
+    {% csrf_token %}
+    <p>Enter title here:</p>
+    {{submit_text_form.title}}
+    <p>Enter text here:</p>
+    {{submit_text_form.body}}
+    <br>
+    <input type="submit" value="Submit" form="submit_text_form" style="margin-top: 10px">
+</form>
+<br>
+<form id="upload_file_form" hx-post="{% url 'handle-file' %}" hx-target="#text_list" hx-swap="afterbegin" hx-encoding="multipart/form-data">
+    {% csrf_token %}
+    <p>Or optionally upload from file:</p>
+    {{ upload_file_form.file }}
+    <input type="submit" value="Submit" form="upload_file_form" style="margin-top: 10px">
+</form>
+
+
+</body>
 </html>

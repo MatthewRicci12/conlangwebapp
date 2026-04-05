@@ -1,0 +1,10 @@
+.text:hover {
+    background-color: yellow;
+    color: cyan;
+}
+
+.word:hover {
+    background-color: yellow;
+    border-radius: 3px;
+    cursor: pointer;
+}
