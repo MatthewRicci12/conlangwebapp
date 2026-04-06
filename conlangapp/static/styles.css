@@ -8,3 +8,20 @@
     border-radius: 3px;
     cursor: pointer;
 }
+
+#extract_text_master_container {
+    display: flex;
+    flex-direction: row; /* optional, row is the default */
+    background-color: orange;
+}
+
+#current_text {
+    background-color: green;
+    flex-grow: 1;
+}
+
+#current_form {
+    background-color: blue;
+    flex-grow: 1;
+    display: none;
+}

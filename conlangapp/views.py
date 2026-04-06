@@ -60,12 +60,16 @@ def handle_file(request):
     else:
         return HttpResponse(status=405)
 
+def submit_token(request, text_id):
+    pass #TODO
+
+
 def enter_text_screen(request):
     return render(request, 'enter_text_screen.html')
 
 def user_clicks_text(request, text_id):
-    text = Text.objects.get(text_id=text_id).body
-    context = {'text': text}
+    text_content = Text.objects.get(text_id=text_id).body
+    context = {'text_content': text_content, 'text_id': text_id}
     return render(request, 'extract_text.html', context)
 
 def vocabulary_list(request):
