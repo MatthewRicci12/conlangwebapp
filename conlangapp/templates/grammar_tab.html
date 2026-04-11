@@ -6,8 +6,12 @@
 </head>
 <body>
 
-<h1>Grammar thing 1</h1>
-<p>This is how this grammar works...potentially LaTeX style but that might be insane.</p>
+{% if gns %}
+    {% for gn in gns %}
+        <h1>{{gn.title}}</h1>
+        <p>{{gn.body}}</p>
+    {% endfor %}
+{% endif %}
 
 </body>
 </html>

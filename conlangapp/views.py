@@ -7,6 +7,23 @@ from pathlib import Path
 
 #@login_required
 
+part_of_speech_enum = {
+    0: "Undecided",
+    1: "Noun",
+    2: "Verb",
+    3: "Adjective",
+    4: "Adverb",
+    5: "Pronoun",
+    6: "Adposition",
+    7: "Conjunction",
+    8: "Determiner",
+    9: "Interjection",
+    10: "Particle",
+    11: "Clitic",
+    12: "Classifier",
+    13: "Demonstrative",
+}
+
 def index(request):
     context = {}
     texts = Text.objects.all().order_by('-date_added')
@@ -32,7 +49,7 @@ def submit_text(request):
         #TODO: Save datetime too
         text.save()
         context = {'text': text}
-        response = render(request, 'partials/text-entry.html', context)
+        response = render(request, 'partials/text_entry.html', context)
         return response
     else:
         return HttpResponse(status=405)
@@ -55,13 +72,13 @@ def handle_file(request):
         text.save()
 
         context = {'text': text}
-        response = render(request, 'partials/text-entry.html', context)
+        response = render(request, 'partials/text_entry.html', context)
         return response
     else:
         return HttpResponse(status=405)
 
 def submit_token(request, text_id):
-    pass #TODO
+    return render(request, 'partials/current_form.html')
 
 
 def enter_text_screen(request):
@@ -69,14 +86,68 @@ def enter_text_screen(request):
 
 def user_clicks_text(request, text_id):
     text_content = Text.objects.get(text_id=text_id).body
-    context = {'text_content': text_content, 'text_id': text_id}
+    form_div_context = {'text_id': text_id}
+    vocabulary_entry_form = VocabularyEntryForm(request.POST)
+    glyph_form = GlyphForm(request.POST)
+    grammar_note_form = GrammarNoteForm(request.POST)
+
+    if 'form_up' in request.POST:
+        form_up = True
+        form_div_context['vocabulary_entry_form'] = vocabulary_entry_form
+        form_div_context['glyph_form'] = glyph_form
+        form_div_context['grammar_note_form'] = grammar_note_form
+    else:
+        form_up = False
+
+    if 'token' in request.POST:
+        token = request.POST['token']
+        form_div_context['token'] = token
+    else:
+        form_div_context['token'] = ''
+
+    if 'selected_form' in request.POST:
+        selected_form = request.POST['selected_form']
+        form_div_context['selected_form'] = selected_form
+
+        if "form_has_been_submitted" in request.POST:
+
+            if selected_form == "vocabulary_entry_form":
+                part_of_speech = request.POST['part_of_speech']
+                definition = request.POST['definition']
+                vocabulary_entry = VocabularyEntry(part_of_speech=part_of_speech, definition=definition)
+                vocabulary_entry.save()
+
+            elif selected_form == "glyph_form":
+                glyph = Glyph(glyph_string=request.POST['token'])
+                glyph.save()
+
+            elif selected_form == "grammar_note_form":
+                grammar_note_body = request.POST['body']
+                grammar_note = GrammarNote(body=grammar_note_body, title=request.POST['token'])
+                grammar_note.save()
+
+    else:
+        form_div_context['selected_form'] = ''
+
+    context = {'text_content': text_content, 'text_id': text_id, 'form_up': form_up, 'params': {'text_id': text_id, 'form_up': form_up},
+               'form_div_context': form_div_context}
     return render(request, 'extract_text.html', context)
 
+
 def vocabulary_list(request):
-    return render(request, 'vocabulary_list.html')
+    context = {'ves': []}
+    for ve in VocabularyEntry.objects.all():
+        context['ves'].append(ve)
+    return render(request, 'vocabulary_list.html', context)
 
 def phonology_and_glyphs_tab(request):
-    return render(request, 'phonology_and_glyphs_tab.html')
+    context = {'glyphs': []}
+    for glyph in Glyph.objects.all():
+        context['glyphs'].append(glyph.glyph_string)
+    return render(request, 'phonology_and_glyphs_tab.html', context)
 
 def grammar_tab(request):
-    return render(request, 'grammar_tab.html')
+    context = {'gns': []}
+    for gn in GrammarNote.objects.all():
+        context['gns'].append(gn)
+    return render(request, 'grammar_tab.html', context)

@@ -11,8 +11,8 @@ def hoverable_words(text, text_id):
     result = ''
     for token in words:
         if token.strip():
-            url = reverse('submit-token', args=[text_id])
-            result += f'<span class="word" hx-post="{url}" hx-vals=\'{{"token": "{token}"}}\'>{token}</span>'
+            url = reverse('user-clicks-text', args=[text_id])
+            result += f'<span class="word" hx-post="{url}" hx-target="body" hx-vals=\'{{"form_up": 1, "token": "{token}"}}\'>{token}</span>'
         else:
             result += token
     return mark_safe(result)

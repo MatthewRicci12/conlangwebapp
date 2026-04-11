@@ -17,14 +17,15 @@
 <body>
 
 <div id="tabs">
-  <button>Tab 1</button>
-  <button>Tab 2</button>
+  <a href="{% url 'vocabulary-list' %}" class="button">Vocabulary List</a>
+  <a href="{% url 'phonology-and-glyphs-tab' %}" class="button">Glyphs and Phonology Mappings</a>
+  <a href="{% url 'grammar-tab' %}" class="button">Grammar Notes</a>
 </div>
 
 <div id="text_list">
     {% if texts %}
         {% for text in texts %}
-            {% include 'partials/text-entry.html' %}
+            {% include 'partials/text_entry.html' %}
         {% endfor %}
     {% endif %}
 </div>

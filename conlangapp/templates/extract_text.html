@@ -21,9 +21,10 @@
     {{ text_content |hoverable_words:text_id }}
     </div>
 
-    <div id="current_form">
-        <p>Hi I'm another form.</p>
-    </div>
+    {% if form_up %}
+        {% include 'partials/current_form.html' with form_div_context=form_div_context only%}
+    {% endif %}
+
 </div>
 
 </body>

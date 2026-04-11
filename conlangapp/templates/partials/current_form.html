@@ -1,0 +1,38 @@
+<div id="current_form" style="display: flex">
+    <button>Back</button>
+    <br>
+
+    <div id="form_tabs">
+        <button hx-post="{% url 'user-clicks-text' form_div_context.text_id %}" hx-target="body" hx-vals='{"form_up": 1, "token": "{{form_div_context.token}}", "selected_form": "vocabulary_entry_form"}'>Submit Vocabulary Entry</button>
+        <button hx-post="{% url 'user-clicks-text' form_div_context.text_id  %}" hx-target="body" hx-vals='{"form_up": 1, "token": "{{form_div_context.token}}", "selected_form": "glyph_form"}'>Submit Glyph</button>
+        <button hx-post="{% url 'user-clicks-text' form_div_context.text_id  %}" hx-target="body" hx-vals='{"form_up": 1, "token": "{{form_div_context.token}}", "selected_form": "grammar_note_form"}'>Submit Grammar Note</button>
+    </div>
+
+
+    {% if form_div_context.selected_form == "vocabulary_entry_form" %}
+    <form id="vocabulary_entry_form" hx-post="{% url 'user-clicks-text' form_div_context.text_id %}" hx-target="body"
+          hx-vals='{"form_up": 1, "token": "{{form_div_context.token}}", "selected_form": "vocabulary_entry_form", "form_has_been_submitted": 1}'>
+        {% csrf_token %}
+        <p>Selected word: {{form_div_context.token}}</p>
+        <p>Select part of speech:</p>
+        {{form_div_context.vocabulary_entry_form.part_of_speech}}
+        <p>Enter definition for this vocabulary word:</p>
+        {{form_div_context.vocabulary_entry_form.definition}}
+        <input type="submit" value="Submit" form="vocabulary_entry_form" style="margin-top: 10px">
+    </form>
+    {% elif form_div_context.selected_form == "glyph_form" %}
+    <form id="glyph_form" hx-post="{% url 'user-clicks-text' form_div_context.text_id %}" hx-target="body"
+          hx-vals='{"form_up": 1, "token": "{{form_div_context.token}}", "selected_form": "glyph_form", "form_has_been_submitted": 1}'>
+        {% csrf_token %}
+        <p>Selected glyph(s): {{form_div_context.token}}</p>
+        <input type="submit" value="Submit" form="glyph_form" style="margin-top: 10px">
+    </form>
+    {% elif form_div_context.selected_form == "grammar_note_form" %}
+    <form id="grammar_note_form" hx-post="{% url 'user-clicks-text' form_div_context.text_id %}" hx-target="body"
+          hx-vals='{"form_up": 1, "token": "{{form_div_context.token}}", "selected_form": "grammar_note_form", "form_has_been_submitted": 1}'>
+        {% csrf_token %}
+        <p>What this token ({{form_div_context.token}}) is a grammar example of: {{form_div_context.grammar_note_form.body}}</p>
+        <input type="submit" value="Submit" form="grammar_note_form" style="margin-top: 10px">
+    </form>
+    {% endif %}
+</div>

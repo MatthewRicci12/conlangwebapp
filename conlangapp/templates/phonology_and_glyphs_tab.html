@@ -6,51 +6,11 @@
 </head>
 <body>
 
-<h1>Glyphs (need to map it to below table somehow)</h1>
-<ul>
-  <li>a --> (/a/, /e/)</li>
-  <li>b</li>
-  <li>c</li>
-</ul>
+{% if glyphs %}
+    {{ glyphs|unordered_list }}
+{% endif %}
 
-
-<table>
-  <tr>
-    <th></th>
-    <th>Alveolar</th>
-    <th>Fricative</th>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-</table>
+{% include 'partials/ipa_table.html' %}
 
 </body>
 </html>

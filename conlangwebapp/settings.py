@@ -116,4 +116,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = 'static/'
+
 AUTH_USER_MODEL = 'conlangapp.User'

@@ -23,4 +23,5 @@ media/
 # OS junk
 .DS_Store
 Thumbs.db
-.idea/
+.idea
+conlangapp/migrations
