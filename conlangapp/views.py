@@ -1,27 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.template import loader
 from django.views.decorators.http import require_http_methods
 from .forms import *
 from pathlib import Path
+from .crud.crud import *
+import json
 
-#@login_required
-
-part_of_speech_enum = {
-    0: "Undecided",
-    1: "Noun",
-    2: "Verb",
-    3: "Adjective",
-    4: "Adverb",
-    5: "Pronoun",
-    6: "Adposition",
-    7: "Conjunction",
-    8: "Determiner",
-    9: "Interjection",
-    10: "Particle",
-    11: "Clitic",
-    12: "Classifier",
-    13: "Demonstrative",
+crud_map = {
+    ('Text', 'update'): update_text,
+    ('Text', 'delete'): delete_text,
+    ('GrammarNote', 'update'): update_grammarnote,
+    ('GrammarNote', 'delete'): delete_grammarnote,
+    ('VocabularyEntry', 'update'): update_vocabularyentry,
+    ('VocabularyEntry', 'delete'): delete_vocabularyentry,
+    ('Glyph', 'update'): update_glyph,
+    ('Glyph', 'delete'): delete_glyph,
 }
 
 def index(request):
@@ -129,7 +122,7 @@ def user_clicks_text(request, text_id):
     else:
         form_div_context['selected_form'] = ''
 
-    context = {'text_content': text_content, 'text_id': text_id, 'form_up': form_up, 'params': {'text_id': text_id, 'form_up': form_up},
+    context = {'text_content': text_content, 'text_id': text_id, 'form_up': form_up, 'params': {'text_id': text_id, 'form_up': form_up, 'selected_form': form_div_context['selected_form']},
                'form_div_context': form_div_context}
     return render(request, 'extract_text.html', context)
 
@@ -143,7 +136,7 @@ def vocabulary_list(request):
 def phonology_and_glyphs_tab(request):
     context = {'glyphs': []}
     for glyph in Glyph.objects.all():
-        context['glyphs'].append(glyph.glyph_string)
+        context['glyphs'].append(glyph)
     return render(request, 'phonology_and_glyphs_tab.html', context)
 
 def grammar_tab(request):
@@ -151,3 +144,21 @@ def grammar_tab(request):
     for gn in GrammarNote.objects.all():
         context['gns'].append(gn)
     return render(request, 'grammar_tab.html', context)
+
+@require_http_methods(["POST"])
+def crud_router(request):
+    print("Crud router called")
+
+    model = request.POST['model']
+    action = request.POST['action']
+    params = json.loads(request.POST['params'])
+
+    print(f"{crud_map[(model, action)]}")
+    crud_map[(model, action)](params)
+    return HttpResponse('')
+
+@require_http_methods(["GET"])
+def modal(request):
+    params = json.loads(request.GET['params'])
+    glyph_id = params['glyph_id']
+    return render(request, 'partials/modal.html', context={'glyph_id': glyph_id})

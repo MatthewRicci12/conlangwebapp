@@ -3,13 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Conlang App</title>
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>
+    <!-- So I can use CSRF tokens in more than just forms. -->
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <script>
+      document.addEventListener('htmx:configRequest', function(evt) {
+        evt.detail.headers['X-CSRFToken'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      });
+    </script>
 </head>
 <body>
+{% load get_part_of_speech %}
 
 {% if ves %}
     {% for ve in ves %}
-        <h1>{{ve.part_of_speech}}</h1>
-        <p>{{ve.definition}}</p>
+        <div>
+            <h1>{{ ve.part_of_speech|get_part_of_speech }}</h1>
+            <p>{{ve.definition}}</p>
+            <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "VocabularyEntry", "action": "update", "params": "{\"ve_id\": \"{{ve.ve_id}}\"}"}'>Update</button>
+            <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "VocabularyEntry", "action": "delete", "params": "{\"ve_id\": \"{{ve.ve_id}}\"}"}'>Delete</button>
+        </div>
     {% endfor %}
 {% endif %}
 

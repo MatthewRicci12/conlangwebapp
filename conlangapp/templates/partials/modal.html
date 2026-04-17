@@ -1,0 +1,43 @@
+<div id="modal">
+  <div class="modal-underlay" onclick="closeModal()"></div>
+  <div class="modal-content">
+    <h1>Edit glyph string</h1>
+    <form id="edit_glyph" onsubmit="submitForm()">
+      <textarea form="edit_glyph" id="edit_glyph_textarea" rows="4" cols="50"></textarea>
+      <br>
+      <input type="submit" form="edit_glyph">
+    </form>
+    <button class="btn danger" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+  function submitForm() {
+    event.preventDefault(); //Ajax competes with native form submission reload action. Likely common AJAX pattern.
+
+    var new_glyph_string = document.getElementById("edit_glyph_textarea").value;
+    var glyph_id = {{ glyph_id }};
+
+    htmx.ajax('POST', '{% url "crud-router" %}', {
+      target: 'body',
+      swap: 'beforeend',
+      values: {
+        model: "Glyph",
+        action: "update",
+        params: JSON.stringify({ glyph_id: glyph_id, new_glyph_string: new_glyph_string })
+      }
+    }).catch(() => {});
+  }
+
+  function closeModal() {
+    console.log("I am in closeModal")
+    const modal = document.getElementById('modal');
+    modal.classList.add('closing');
+    setTimeout(() => {
+      modal.remove();
+    }, 300);
+  }
+
+  // Open the modal immediately after it's inserted
+  document.getElementById('modal').classList.add('open');
+</script>

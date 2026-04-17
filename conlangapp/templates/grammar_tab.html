@@ -3,13 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Conlang App</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>
+    <!-- So I can use CSRF tokens in more than just forms. -->
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <script>
+      document.addEventListener('htmx:configRequest', function(evt) {
+        evt.detail.headers['X-CSRFToken'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      });
+    </script>
 </head>
 <body>
 
 {% if gns %}
     {% for gn in gns %}
-        <h1>{{gn.title}}</h1>
-        <p>{{gn.body}}</p>
+        <div>
+            <h1>{{gn.title}}</h1>
+            <p>{{gn.body}}</p>
+            <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "GrammarNote", "action": "update", "params": "{\"gn_id\": \"{{gn.gn_id}}\"}"}'>Update</button>
+            <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "GrammarNote", "action": "delete", "params": "{\"gn_id\": \"{{gn.gn_id}}\"}"}'>Delete</button>
+        </div>
     {% endfor %}
 {% endif %}
 

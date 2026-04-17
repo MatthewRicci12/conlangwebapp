@@ -17,6 +17,7 @@
 
 #current_text {
     background-color: green;
+    color: white;
     flex-grow: 1;
 }
 
@@ -33,3 +34,46 @@ a.button {
     background-color: green;
     text-decoration: none;
 }
+
+  #modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  #modal.open {
+    display: flex;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  #modal.closing {
+    animation: fadeOut 0.3s ease-out forwards;
+  }
+
+  .modal-underlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    position: relative;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
