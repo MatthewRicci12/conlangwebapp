@@ -1,0 +1,11 @@
+<h1>Edit text title or description</h1>
+<form id="edit_text" onsubmit="submitForm()">
+  <textarea form="edit_text" id="edit_text_textarea" rows="4" cols="50"></textarea>
+    <p>Edit title here:</p>
+    {{form.title}}
+    <p>Edit body here:</p>
+    {{form.body}}
+    <br>
+  <input type="submit" form="edit_text">
+</form>
+<button class="btn danger" onclick="closeModal()">Close</button>

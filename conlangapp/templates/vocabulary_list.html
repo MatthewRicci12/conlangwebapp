@@ -20,7 +20,7 @@
         <div>
             <h1>{{ ve.part_of_speech|get_part_of_speech }}</h1>
             <p>{{ve.definition}}</p>
-            <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "VocabularyEntry", "action": "update", "params": "{\"ve_id\": \"{{ve.ve_id}}\"}"}'>Update</button>
+            <button hx-get="{% url 'modal' %}" hx-target="body" hx-swap="beforeend" hx-vals='{"model": "VocabularyEntry", "action": "update", "params": "{\"ve_id\": \"{{ve.ve_id}}\"}"}'>Update</button>
             <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "VocabularyEntry", "action": "delete", "params": "{\"ve_id\": \"{{ve.ve_id}}\"}"}'>Delete</button>
         </div>
     {% endfor %}

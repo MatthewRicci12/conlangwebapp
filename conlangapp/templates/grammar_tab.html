@@ -19,7 +19,7 @@
         <div>
             <h1>{{gn.title}}</h1>
             <p>{{gn.body}}</p>
-            <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "GrammarNote", "action": "update", "params": "{\"gn_id\": \"{{gn.gn_id}}\"}"}'>Update</button>
+            <button hx-get="{% url 'modal' %}" hx-target="body" hx-swap="beforeend" hx-vals='{"model": "GrammarNote", "action": "update", "params": "{\"gn_id\": \"{{gn.gn_id}}\"}"}'>Update</button>
             <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "GrammarNote", "action": "delete", "params": "{\"gn_id\": \"{{gn.gn_id}}\"}"}'>Delete</button>
         </div>
     {% endfor %}
