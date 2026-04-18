@@ -25,8 +25,37 @@
 <!--    Context is inherited so probably don't need the with-->
         {% include 'partials/current_form.html' with form_div_context=form_div_context only%}
     {% endif %}
-
 </div>
 
+
+<script>
+  var container = document.getElementById('current_text');
+
+  container.addEventListener('click', (e) => {
+    if (e.target.classList.contains('word')) {
+      clickedWord = e.target.firstChild.data
+      submitTokens(clickedWord)
+    }
+  });
+
+  container.addEventListener('mouseup', () => {
+    const selection = window.getSelection().toString();
+    if (selection.length > 0) {
+        console.log(`Selection: ${selection}, type: ${typeof(selection)}`)
+        submitTokens(selection)
+    }
+  });
+
+  function submitTokens(tokens) {
+      htmx.ajax('POST', '{% url "user-clicks-text" text_id %}', {
+      target: 'body',
+      values: {
+        form_up: 1,
+        token: tokens,
+        selected_form: "{{ selected_form }}"
+      }
+    }).catch(() => {});
+  }
+</script>
 </body>
 </html>
