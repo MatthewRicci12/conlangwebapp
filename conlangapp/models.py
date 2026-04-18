@@ -62,8 +62,6 @@ class Text(models.Model):
     text_id = models.AutoField(primary_key=True)  # Not needed; Django adds automatically
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, db_constraint=True, related_name="texts")  # db_costraint True by default, says constraint SHOULD be created
 
-
-
 class PhonologyMapping(models.Model):
     class PhonologicalStatus(models.IntegerChoices):
         UNDECIDED = 0
@@ -71,18 +69,18 @@ class PhonologyMapping(models.Model):
         ALLOPHONE = 2
         FREE_VARIATION = 3
 
-    ipa_symbol = models.CharField(null=True, max_length=10) #Probably have a palceholder or let it be null
+    ipa_symbol = models.CharField(null=True, max_length=10)
     phonological_status = models.IntegerField(choices=PhonologicalStatus, default=PhonologicalStatus.UNDECIDED)
     distribution = models.CharField(null=True, max_length=255)
-    user = models.ForeignKey(User, null=True, blank=True,  on_delete=models.CASCADE, db_constraint=True, related_name="phonology_mappings")  # db_costraint True by default, says constraint SHOULD be created
-    pm_id = models.AutoField(primary_key=True)  # Not needed; Django adds automatically
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, db_constraint=True, related_name="phonology_mappings")
+    pm_id = models.AutoField(primary_key=True)
 
 class Glyph(models.Model):
     glyph_string = models.CharField(max_length=10)
+    glyph_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, db_constraint=True, related_name="glyphs")
+    phonology_mappings = models.ManyToManyField(PhonologyMapping, related_name="glyphs")
 
-    glyph_id = models.AutoField(primary_key=True)  # Not needed; Django adds automatically
-    user = models.ForeignKey(User, null=True, blank=True,  on_delete=models.CASCADE, db_constraint=True, related_name="glyphs")  # db_costraint True by default, says constraint SHOULD be created
-    phonology_mappings = models.ManyToManyField(PhonologyMapping)
 
 # If any many-to-many pairings THEMSELVES have attributes, check out 4th normal form and make an explicit table, not default DJango.
 

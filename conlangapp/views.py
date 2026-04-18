@@ -137,6 +137,18 @@ def phonology_and_glyphs_tab(request):
     context = {'glyphs': []}
     for glyph in Glyph.objects.all():
         context['glyphs'].append(glyph)
+
+    currently_selected_glyph_id = None
+    if 'glyph_id' in request.POST:
+        if request.POST['glyph_id'] != 'null':
+            currently_selected_glyph_id = int(request.POST['glyph_id'])
+    context['currently_selected_glyph_id'] = currently_selected_glyph_id
+
+    selected_ipa_symbol = None
+    if 'selected_ipa_symbol' in request.POST:
+        selected_ipa_symbol = request.POST['selected_ipa_symbol']
+    context['selected_ipa_symbol'] = selected_ipa_symbol
+
     return render(request, 'phonology_and_glyphs_tab.html', context)
 
 def grammar_tab(request):
@@ -184,3 +196,12 @@ def modal(request):
         context = {'which_model': 'GrammarNote', 'pk': gn_id, 'form': GrammarNoteForm(request.POST)}
 
     return render(request, 'partials/modal.html', context=context)
+
+def create_phonology_mapping(request):
+    selected_ipa_symbol = request.POST['selected_ipa_symbol']
+    selected_glyph_pk = request.POST['selected_glyph_pk']
+    pm = PhonologyMapping(ipa_symbol=selected_ipa_symbol)
+    pm.save()
+    glyph = Glyph.objects.get(pk=selected_glyph_pk)
+    glyph.phonology_mappings.add(pm)
+    return HttpResponse('')

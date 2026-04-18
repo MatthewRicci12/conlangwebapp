@@ -1,0 +1,265 @@
+    <div class="container">
+        <h1>IPA Sound Chart</h1>
+
+        <!-- CONSONANTS -->
+        <h2>Consonants</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Manner</th>
+                        <th>Bilabial</th>
+                        <th>Labiodental</th>
+                        <th>Dental</th>
+                        <th>Alveolar</th>
+                        <th>Postalveolar</th>
+                        <th>Retroflex</th>
+                        <th>Palatal</th>
+                        <th>Velar</th>
+                        <th>Labial-velar</th>
+                        <th>Uvular</th>
+                        <th>Pharyngeal</th>
+                        <th>Glottal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-label">Plosive</td>
+                        <td><div><span class="word" hx-post="{% url 'create-phonology-mapping' %}" hx-swap="none" hx-vals='{ "selected_ipa_symbol": "p", "selected_glyph_pk": {{ currently_selected_glyph_id }} }'>p</span><span class="voiced">b</span></div></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td><div class="pair"><span class="voiceless">t</span><span class="voiced">d</span></div></td>
+                        <td class="empty-cell"></td>
+                        <td><div class="pair"><span class="voiceless">ʈ</span><span class="voiced">ɖ</span></div></td>
+                        <td><div class="pair"><span class="voiceless">c</span><span class="voiced">ɟ</span></div></td>
+                        <td><div class="pair"><span class="voiceless">k</span><span class="voiced">ɡ</span></div></td>
+                        <td><div class="pair"><span class="voiceless">q</span><span class="voiced"></span></div></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiceless">ʔ</span></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Nasal</td>
+                        <td><span class="voiced">m</span></td>
+                        <td><span class="voiced">ɱ</span></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">n</span></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">ɳ</span></td>
+                        <td><span class="voiced">ɲ</span></td>
+                        <td><span class="voiced">ŋ</span></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">ɴ</span></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Trill</td>
+                        <td><span class="voiced">ʙ</span></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">r</span></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">ʀ</span></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Flap</td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">ⱱ</span></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">ɾ</span></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">ɽ</span></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Fricative</td>
+                        <td class="empty-cell"></td>
+                        <td><div class="pair"><span class="voiceless">f</span><span class="voiced">v</span></div></td>
+                        <td><div class="pair"><span class="voiceless">θ</span><span class="voiced">ð</span></div></td>
+                        <td><div class="pair"><span class="voiceless">s</span><span class="voiced">z</span></div></td>
+                        <td><div class="pair"><span class="voiceless">ʃ</span><span class="voiced">ʒ</span></div></td>
+                        <td><div class="pair"><span class="voiceless">ʂ</span><span class="voiced">ʐ</span></div></td>
+                        <td><div class="pair"><span class="voiceless">ç</span><span class="voiced">ʝ</span></div></td>
+                        <td><div class="pair"><span class="voiceless">x</span><span class="voiced">ɣ</span></div></td>
+                        <td class="empty-cell"></td>
+                        <td><div class="pair"><span class="voiceless">χ</span><span class="voiced">ʁ</span></div></td>
+                        <td><div class="pair"><span class="voiceless">ħ</span><span class="voiced">ʕ</span></div></td>
+                        <td><div class="pair"><span class="voiceless">h</span><span class="voiced">ɦ</span></div></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Lateral fricative</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td><div class="pair"><span class="voiceless">ɬ</span><span class="voiced">ɮ</span></div></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Approximant</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">ɹ</span></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">ɻ</span></td>
+                        <td><span class="voiced">j</span></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">w</span></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">Lateral approximant</td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">l</span></td>
+                        <td class="empty-cell"></td>
+                        <td><span class="voiced">ɭ</span></td>
+                        <td><span class="voiced">ʎ</span></td>
+                        <td><span class="voiced">ʟ</span></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                        <td class="empty-cell"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- VOWELS -->
+        <h2>Vowels</h2>
+
+        <div class="vowel-table-wrapper">
+            <!-- Front vowels -->
+            <div class="table-wrapper">
+                <h3 style="margin: 0 0 15px 0; color: #2c3e50;">Front Vowels</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Height</th>
+                            <th>Unrounded</th>
+                            <th>Rounded</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-label">Close</td>
+                            <td><span class="ipa-symbol">i</span></td>
+                            <td><span class="ipa-symbol">y</span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Close-mid</td>
+                            <td><span class="ipa-symbol">e</span></td>
+                            <td><span class="ipa-symbol">ø</span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Open-mid</td>
+                            <td><span class="ipa-symbol">ɛ</span></td>
+                            <td><span class="ipa-symbol">œ</span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Open</td>
+                            <td><span class="ipa-symbol">a</span></td>
+                            <td><span class="ipa-symbol">ɶ</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Back vowels -->
+            <div class="table-wrapper">
+                <h3 style="margin: 0 0 15px 0; color: #2c3e50;">Back Vowels</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Height</th>
+                            <th>Unrounded</th>
+                            <th>Rounded</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-label">Close</td>
+                            <td><span class="ipa-symbol">ɨ</span></td>
+                            <td><span class="ipa-symbol">u</span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Close-mid</td>
+                            <td><span class="ipa-symbol">ə</span></td>
+                            <td><span class="ipa-symbol">o</span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Open-mid</td>
+                            <td><span class="ipa-symbol">ʌ</span></td>
+                            <td><span class="ipa-symbol">ɔ</span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Open</td>
+                            <td><span class="ipa-symbol">ɑ</span></td>
+                            <td><span class="ipa-symbol">ɒ</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Central vowels -->
+            <div class="table-wrapper">
+                <h3 style="margin: 0 0 15px 0; color: #2c3e50;">Central Vowels</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Height</th>
+                            <th>Unrounded</th>
+                            <th>Rounded</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-label">Close</td>
+                            <td><span class="ipa-symbol">ɪ</span></td>
+                            <td><span class="ipa-symbol">ʊ</span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Close-mid</td>
+                            <td><span class="ipa-symbol">ə</span></td>
+                            <td><span class="ipa-symbol">ɵ</span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Open-mid</td>
+                            <td><span class="ipa-symbol">ɜ</span></td>
+                            <td><span class="ipa-symbol">ɞ</span></td>
+                        </tr>
+                        <tr>
+                            <td class="row-label">Open</td>
+                            <td><span class="ipa-symbol">ɐ</span></td>
+                            <td class="empty-cell"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>

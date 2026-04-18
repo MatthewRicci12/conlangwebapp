@@ -12,6 +12,7 @@ urlpatterns = [
 
     path('crud_router', views.crud_router, name="crud-router"),
     path('modal', views.modal, name="modal"),
+    path('create_phonology_mapping', views.create_phonology_mapping, name="create-phonology-mapping"),
 
     path("vocabulary_list", views.vocabulary_list, name="vocabulary-list"),
     path("phonology_and_glyphs_tab", views.phonology_and_glyphs_tab, name="phonology-and-glyphs-tab"),
