@@ -30,7 +30,15 @@
     {% for glyph in glyphs %}
     <div>
         <ul>
-            <li><span class="word" style="{% if currently_selected_glyph_id == glyph.glyph_id %}background-color: yellow;{% endif %}" hx-post="{% url 'phonology-and-glyphs-tab' %}" hx-target="body" hx-vals='{ "glyph_id": {% if currently_selected_glyph_id != glyph.glyph_id %}{{ glyph.glyph_id }}{% else %}null{% endif %} }'>{{glyph.glyph_string}}</span></li>
+            {% if glyph.phonology_mappings.exists %}
+                <li><span class="word" style="{% if currently_selected_glyph_id == glyph.glyph_id %}background-color: yellow;{% endif %}" hx-post="{% url 'phonology-and-glyphs-tab' %}" hx-target="body" hx-vals='{ "glyph_id": {% if currently_selected_glyph_id != glyph.glyph_id %}{{ glyph.glyph_id }}{% else %}null{% endif %} }'>{{glyph.glyph_string}} -->
+                {% for pm in glyph.phonology_mappings.all %}
+                    {{ pm.ipa_symbol }},
+                {% endfor %}
+                </span></li>
+            {% else %}
+              <li><span class="word" style="{% if currently_selected_glyph_id == glyph.glyph_id %}background-color: yellow;{% endif %}" hx-post="{% url 'phonology-and-glyphs-tab' %}" hx-target="body" hx-vals='{ "glyph_id": {% if currently_selected_glyph_id != glyph.glyph_id %}{{ glyph.glyph_id }}{% else %}null{% endif %} }'>{{glyph.glyph_string}}</span></li>
+            {% endif %}
             <button hx-get="{% url 'modal' %}" hx-target="body" hx-swap="beforeend" hx-vals='{"model": "Glyph", "action": "update", "params": "{\"glyph_id\": {{glyph.glyph_id}}}"}'>Update</button>
             <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "Glyph", "action": "delete", "primary_key": {{glyph.glyph_id}}}'>Delete</button>
         </ul>
