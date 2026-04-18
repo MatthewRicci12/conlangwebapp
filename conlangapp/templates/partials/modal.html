@@ -2,13 +2,13 @@
   <div class="modal-underlay" onclick="closeModal()"></div>
   <div class="modal-content">
       {% if which_model == "Text" %}
-            {% include 'partials/text_edit_form.html' with context=context only %}
+            {% include 'partials/text_edit_form.html'%}
       {% elif which_model == "VocabularyEntry" %}
-            {% include 'partials/ve_edit_form.html' with context=context only %}
+            {% include 'partials/ve_edit_form.html'%}
       {% elif which_model == "GrammarNote" %}
-            {% include 'partials/gn_edit_form.html' with context=context only %}
+            {% include 'partials/gn_edit_form.html'%}
       {% elif which_model == "Glyph" %}
-            {% include 'partials/glyph_edit_form.html' with context=context only %}
+            {% include 'partials/glyph_edit_form.html'%}
       {% endif %}
   </div>
 </div>
@@ -17,16 +17,23 @@
   function submitForm() {
     event.preventDefault(); //Ajax competes with native form submission reload action. Likely common AJAX pattern.
 
-    var new_glyph_string = document.getElementById("edit_glyph_textarea").value;
-    var glyph_id = {{ glyph_id }};
+    const form = event.target
+    const data = new FormData(form);
+    const values = data.values()
+    const dataAsObj = Object.fromEntries(data.entries());
+
+    for (const value of data.values()) {
+      console.log(value);
+    }
 
     htmx.ajax('POST', '{% url "crud-router" %}', {
       target: 'body',
       swap: 'beforeend',
       values: {
-        model: "Glyph",
+        model: "{{ which_model }}",
         action: "update",
-        params: JSON.stringify({ glyph_id: glyph_id, new_glyph_string: new_glyph_string })
+        primary_key: {{ pk }},
+        params: JSON.stringify(dataAsObj)
       }
     }).catch(() => {});
   }

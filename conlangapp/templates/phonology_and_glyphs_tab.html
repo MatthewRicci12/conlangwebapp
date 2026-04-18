@@ -32,7 +32,7 @@
         <ul>
             <li>{{glyph.glyph_string}}</li>
             <button hx-get="{% url 'modal' %}" hx-target="body" hx-swap="beforeend" hx-vals='{"model": "Glyph", "action": "update", "params": "{\"glyph_id\": {{glyph.glyph_id}}}"}'>Update</button>
-            <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "Glyph", "action": "delete", "params": "{\"glyph_id\": \"{{glyph.glyph_id}}\"}"}'>Delete</button>
+            <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "Glyph", "action": "delete", "primary_key": {{glyph.glyph_id}}}'>Delete</button>
         </ul>
     </div>
     {% endfor %}

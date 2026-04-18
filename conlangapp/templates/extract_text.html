@@ -22,6 +22,7 @@
     </div>
 
     {% if form_up %}
+<!--    Context is inherited so probably don't need the with-->
         {% include 'partials/current_form.html' with form_div_context=form_div_context only%}
     {% endif %}
 

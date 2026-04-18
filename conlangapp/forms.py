@@ -23,9 +23,11 @@ class VocabularyEntryForm(forms.ModelForm):
         fields = ['part_of_speech', 'definition']
 
 class GlyphForm(forms.ModelForm):
+    glyph_string = forms.CharField(widget=forms.Textarea())
+
     class Meta:
         model = Glyph
-        fields = []
+        fields = ['glyph_string']
 
 class GrammarNoteForm(forms.ModelForm):
     body = forms.CharField(widget=forms.Textarea())

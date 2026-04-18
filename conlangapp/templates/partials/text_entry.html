@@ -5,4 +5,4 @@
   </div>
 </a>
 <button hx-get="{% url 'modal' %}" hx-target="body" hx-swap="beforeend" hx-vals='{"model": "Text", "action": "update", "params": "{\"text_id\": \"{{text.text_id}}\"}"}'>Update</button>
-<button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "Text", "action": "delete", "params": "{\"text_id\": \"{{text.text_id}}\"}"}'>Delete</button>
+<button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "Text", "action": "delete", "primary_key": {{text.text_id}}}'>Delete</button>

@@ -151,9 +151,12 @@ def crud_router(request):
 
     model = request.POST['model']
     action = request.POST['action']
-    params = json.loads(request.POST['params'])
+    primary_key = request.POST['primary_key']
+    params = {}
+    if 'params' in request.POST:
+        params = json.loads(request.POST['params'])
+    params['primary_key'] = primary_key
 
-    print(f"{crud_map[(model, action)]}")
     crud_map[(model, action)](params)
     return HttpResponse('')
 
@@ -166,18 +169,18 @@ def modal(request):
 
     if model == "Glyph":
         glyph_id = params['glyph_id']
-        context = {'which_model': 'Glyph', 'glyph_id': glyph_id, 'form': GlyphForm(request.POST)}
+        context = {'which_model': 'Glyph', 'pk': glyph_id, 'form': GlyphForm(request.POST)}
 
     if model == "Text":
         text_id = params['text_id']
-        context = {'which_model': 'Text', 'text_id': Text, 'form': SubmitTextForm(request.POST)}
+        context = {'which_model': 'Text', 'pk': text_id, 'form': SubmitTextForm(request.POST)}
 
     if model == "VocabularyEntry":
         ve_id = params['ve_id']
-        context = {'which_model': 'VocabularyEntry', 've_id': ve_id, 'form': VocabularyEntryForm(request.POST)}
+        context = {'which_model': 'VocabularyEntry', 'pk': ve_id, 'form': VocabularyEntryForm(request.POST)}
 
     if model == "GrammarNote":
         gn_id = params['gn_id']
-        context = {'which_model': 'GrammarNote', 'gn_id': gn_id, 'form': GrammarNoteForm(request.POST)}
+        context = {'which_model': 'GrammarNote', 'pk': gn_id, 'form': GrammarNoteForm(request.POST)}
 
     return render(request, 'partials/modal.html', context=context)
