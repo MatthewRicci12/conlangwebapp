@@ -1,5 +1,5 @@
 <div id="current_form" style="display: flex">
-    <button>Back</button>
+    <button hx-post="{% url 'user-clicks-text' form_div_context.text_id %}" hx-target="body">Back</button>
     <br>
 
     <div id="form_tabs">

@@ -17,17 +17,6 @@ crud_map = {
     ('Glyph', 'delete'): delete_glyph,
 }
 
-def handleForm(request):
-    form = SubmitTextForm(request.POST)
-    if form.is_valid():
-        text = form.save(commit=False)
-        if text.user:
-            text.user = request.user
-        else:
-            text.user = None
-        #TODO: Save datetime too
-        text.save()
-
 def index(request):
     if request.method == 'POST':
         submit_text_form = SubmitTextForm(request.POST)
@@ -35,10 +24,9 @@ def index(request):
             text = submit_text_form.save(commit=False)
             text.user = request.user if text.user else None
             text.save()
-            # Redirect after POST to prevent resubmission on refresh
             return redirect('index')
     else:
-        submit_text_form = SubmitTextForm()  # blank form on GET
+        submit_text_form = SubmitTextForm()
 
     texts = Text.objects.all().order_by('-date_added')
     upload_file_form = UploadFileForm()
@@ -49,23 +37,6 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-# @require_http_methods(['POST'])
-# def submit_text(request):
-#     form = SubmitTextForm(request.POST)
-#     x = 3
-#     if form.is_valid():
-#         text = form.save(commit=False)
-#         if text.user:
-#             text.user = request.user
-#         else:
-#             text.user = None
-#         #TODO: Save datetime too
-#         text.save()
-#         context = {'text': text}
-#         response = render(request, 'partials/text_entry.html', context)
-#         return response
-#     else:
-#         return HttpResponse(status=405)
 
 # TODO: Better way to do this handoff? Perhaps with a common helper function?
 @require_http_methods(['POST'])
