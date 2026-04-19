@@ -47,12 +47,14 @@
   });
 
   function submitTokens(tokens) {
+      var selected_form = {% if not form_up %} 'vocabulary_entry_form' {% else %} {{ selected_form }} {% endif %}
+      console.log(`Selected form: ${selected_form}`)
       htmx.ajax('POST', '{% url "user-clicks-text" text_id %}', {
       target: 'body',
       values: {
         form_up: 1,
         token: tokens,
-        selected_form: "{{ selected_form }}"
+        selected_form: selected_form
       }
     }).catch(() => {});
   }
