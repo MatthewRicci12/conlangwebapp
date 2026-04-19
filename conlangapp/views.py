@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 from .forms import *
@@ -17,22 +17,8 @@ crud_map = {
     ('Glyph', 'delete'): delete_glyph,
 }
 
-def index(request):
-    context = {}
-    texts = Text.objects.all().order_by('-date_added')
-    submit_text_form = SubmitTextForm()
-    upload_file_form = UploadFileForm()
-    context = {
-        'texts': texts,
-        'submit_text_form': submit_text_form,
-        'upload_file_form': upload_file_form
-    }
-    return render(request, 'index.html', context)
-
-@require_http_methods(['POST'])
-def submit_text(request):
+def handleForm(request):
     form = SubmitTextForm(request.POST)
-    x = 3
     if form.is_valid():
         text = form.save(commit=False)
         if text.user:
@@ -41,11 +27,45 @@ def submit_text(request):
             text.user = None
         #TODO: Save datetime too
         text.save()
-        context = {'text': text}
-        response = render(request, 'partials/text_entry.html', context)
-        return response
+
+def index(request):
+    if request.method == 'POST':
+        submit_text_form = SubmitTextForm(request.POST)
+        if submit_text_form.is_valid():
+            text = submit_text_form.save(commit=False)
+            text.user = request.user if text.user else None
+            text.save()
+            # Redirect after POST to prevent resubmission on refresh
+            return redirect('index')
     else:
-        return HttpResponse(status=405)
+        submit_text_form = SubmitTextForm()  # blank form on GET
+
+    texts = Text.objects.all().order_by('-date_added')
+    upload_file_form = UploadFileForm()
+    context = {
+        'texts': texts,
+        'submit_text_form': submit_text_form,
+        'upload_file_form': upload_file_form,
+    }
+    return render(request, 'index.html', context)
+
+# @require_http_methods(['POST'])
+# def submit_text(request):
+#     form = SubmitTextForm(request.POST)
+#     x = 3
+#     if form.is_valid():
+#         text = form.save(commit=False)
+#         if text.user:
+#             text.user = request.user
+#         else:
+#             text.user = None
+#         #TODO: Save datetime too
+#         text.save()
+#         context = {'text': text}
+#         response = render(request, 'partials/text_entry.html', context)
+#         return response
+#     else:
+#         return HttpResponse(status=405)
 
 # TODO: Better way to do this handoff? Perhaps with a common helper function?
 @require_http_methods(['POST'])
@@ -60,7 +80,7 @@ def handle_file(request):
         text = Text(
             title=file_name_stripped,
             body=file_contents,
-            date_added=timezone.now(),  # Resolves your datetime TODO
+            date_added=timezone.now(),
         )
         text.save()
 

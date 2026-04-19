@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("submit_text", views.submit_text, name="submit-text"),
+    # path("submit_text", views.submit_text, name="submit-text"),
     path("handle_file", views.handle_file, name="handle-file"),
     path("enter_text", views.enter_text_screen, name="enter-text"),
 

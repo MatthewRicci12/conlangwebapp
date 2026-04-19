@@ -31,7 +31,7 @@
 </div>
 
 
-<form id="submit_text_form" hx-post="{% url 'submit-text' %}" hx-target="#text_list" hx-swap="afterbegin">
+<form id="submit_text_form" hx-post="{% url 'index' %}" hx-target="body" autocomplete="off">
     {% csrf_token %}
     <p>Enter title here:</p>
     {{submit_text_form.title}}
@@ -41,7 +41,7 @@
     <input type="submit" value="Submit" form="submit_text_form" style="margin-top: 10px">
 </form>
 <br>
-<form id="upload_file_form" hx-post="{% url 'handle-file' %}" hx-target="#text_list" hx-swap="afterbegin" hx-encoding="multipart/form-data">
+<form id="upload_file_form" hx-post="{% url 'handle-file' %}" hx-target="body" hx-encoding="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     <p>Or optionally upload from file:</p>
     {{ upload_file_form.file }}
