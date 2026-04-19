@@ -2,12 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 
-
-#title = models.CharField(max_length=100, null=False, blank=False, default=None unique=False)
-# null=False → Database column does NOT allow NULL
-# default=None → Field is required (you must provide a value when creating an instance)
-# blank=False → Form validation requires the field to be filled
-
 class User(AbstractUser):
     email = models.EmailField(unique=True) #It checks format automatically
     # User handles password already
@@ -25,7 +19,7 @@ class GrammarNote(models.Model):
 
     gn_id = models.AutoField(primary_key=True) #Not needed; Django adds automatically
     user = models.ForeignKey(User, null=True, blank=True,  on_delete=models.CASCADE, db_constraint=True, related_name="grammar_notes") #db_costraint True by default, says constraint SHOULD be created
-    tokens = models.ManyToManyField(Token)
+    tokens = models.CharField(max_length=255, default="")
 
 
 class VocabularyEntry(models.Model):
@@ -45,13 +39,14 @@ class VocabularyEntry(models.Model):
         CLASSIFIER = 12
         DEMONSTRATIVE = 13
 
+    tokens = models.CharField(max_length=255, default="")
     definition = models.CharField(max_length=255)
     part_of_speech = models.IntegerField(choices=PartOfSpeech, default=PartOfSpeech.UNDECIDED)
 
     grammar_tag = models.CharField(null=True, max_length=255) #No implementation yet
     ve_id = models.AutoField(primary_key=True)  # Not needed; Django adds automatically
     user = models.ForeignKey(User, null=True, blank=True,  on_delete=models.CASCADE, db_constraint=True, related_name="vocabulary_entries")  # db_costraint True by default, says constraint SHOULD be created
-    tokens = models.ManyToManyField(Token)
+
 
 
 class Text(models.Model):
@@ -80,26 +75,3 @@ class Glyph(models.Model):
     glyph_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, db_constraint=True, related_name="glyphs")
     phonology_mappings = models.ManyToManyField(PhonologyMapping, related_name="glyphs")
-
-
-# If any many-to-many pairings THEMSELVES have attributes, check out 4th normal form and make an explicit table, not default DJango.
-
-#authors = models.ManyToManyField(Author)
-
-# name = models.CharField(max_length=X)
-# email = models.EmailField()
-# created_at = models.DateTimeField(auto_now_add=True) (auto set timestamp, that option)
-
-# user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts') so we can do #user.contacts.all()
-
-# class Meta:
-#     unique_together = ('user', 'email')
-
-# Should do def__str__(self)
-
-
-### python .\manage.py makemigrations
-### python .\manage.py migrate
-### Right click db.sqlite3
-
-### I guess you should do superuser thing and add to admin

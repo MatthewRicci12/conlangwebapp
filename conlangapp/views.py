@@ -107,7 +107,7 @@ def user_clicks_text(request, text_id):
             if selected_form == "vocabulary_entry_form":
                 part_of_speech = request.POST['part_of_speech']
                 definition = request.POST['definition']
-                vocabulary_entry = VocabularyEntry(part_of_speech=part_of_speech, definition=definition)
+                vocabulary_entry = VocabularyEntry(part_of_speech=part_of_speech, definition=definition, tokens=request.POST['token'])
                 vocabulary_entry.save()
 
             elif selected_form == "glyph_form":
