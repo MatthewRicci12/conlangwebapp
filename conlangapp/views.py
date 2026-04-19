@@ -124,6 +124,16 @@ def vocabulary_list(request):
         context['ves'].append(ve)
     return render(request, 'vocabulary_list.html', context)
 
+
+def create_phonology_mapping(request):
+    selected_ipa_symbol = request.POST['selected_ipa_symbol']
+    selected_glyph_pk = request.POST['selected_glyph_pk']
+    pm = PhonologyMapping(ipa_symbol=selected_ipa_symbol)
+    pm.save()
+    glyph = Glyph.objects.get(pk=selected_glyph_pk)
+    glyph.phonology_mappings.add(pm)
+
+
 def phonology_and_glyphs_tab(request):
     context = {'glyphs': []}
     for glyph in Glyph.objects.all():
@@ -137,7 +147,9 @@ def phonology_and_glyphs_tab(request):
 
     selected_ipa_symbol = None
     if 'selected_ipa_symbol' in request.POST:
+        create_phonology_mapping(request)
         selected_ipa_symbol = request.POST['selected_ipa_symbol']
+        context['currently_selected_glyph_id'] = None
     context['selected_ipa_symbol'] = selected_ipa_symbol
 
     return render(request, 'phonology_and_glyphs_tab.html', context)
@@ -187,12 +199,3 @@ def modal(request):
         context = {'which_model': 'GrammarNote', 'pk': gn_id, 'form': GrammarNoteForm(request.POST)}
 
     return render(request, 'partials/modal.html', context=context)
-
-def create_phonology_mapping(request):
-    selected_ipa_symbol = request.POST['selected_ipa_symbol']
-    selected_glyph_pk = request.POST['selected_glyph_pk']
-    pm = PhonologyMapping(ipa_symbol=selected_ipa_symbol)
-    pm.save()
-    glyph = Glyph.objects.get(pk=selected_glyph_pk)
-    glyph.phonology_mappings.add(pm)
-    return HttpResponse('')
