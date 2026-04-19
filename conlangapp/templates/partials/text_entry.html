@@ -1,8 +1,10 @@
+<!--CLICKABLE TEXT DIVS-->
 <a href="{% url 'user-clicks-text' text.text_id %}">
   <div class="text">
     <h2>{{ text.title }}</h2>
     <p>{{ text.body }}</p>
   </div>
 </a>
-<button hx-get="{% url 'modal' %}" hx-target="body" hx-swap="beforeend" hx-vals='{"model": "Text", "action": "update", "params": "{\"text_id\": \"{{text.text_id}}\"}"}'>Update</button>
-<button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "Text", "action": "delete", "primary_key": {{text.text_id}}}'>Delete</button>
+<!--UPDATE/DELETE BUTTONS-->
+<button hx-get="{% url 'modal' %}" hx-target="body" hx-vals='{"model": "Text", "action": "update", "primary_key": {{text.text_id}}}'>Update</button>
+<button hx-get="{% url 'index' %}" hx-target="body" hx-vals='{"model": "Text", "action": "delete", "primary_key": {{text.text_id}}}'>Delete</button>

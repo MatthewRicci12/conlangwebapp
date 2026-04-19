@@ -19,12 +19,14 @@
 
 {% if ves %}
     {% for ve in ves %}
+<!--        VOCABULARY ENTRY DIV-->
         <div>
             <h1>{{ ve.tokens }}</h1>
             <h2>{{ ve.part_of_speech|get_part_of_speech }}</h2>
             <p>{{ve.definition}}</p>
-            <button hx-get="{% url 'modal' %}" hx-target="body" hx-swap="beforeend" hx-vals='{"model": "VocabularyEntry", "action": "update", "params": "{\"ve_id\": \"{{ve.ve_id}}\"}"}'>Update</button>
-            <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "VocabularyEntry", "action": "delete", "primary_key": {{ve.ve_id}}}'>Delete</button>
+            <!--UPDATE/DELETE BUTTONS-->
+            <button hx-get="{% url 'modal' %}" hx-target="body" hx-vals='{"model": "VocabularyEntry", "action": "update", "primary_key": {{text.text_id}}}'>Update</button>
+            <button hx-get="{% url 'vocabulary-list' %}" hx-target="body" hx-vals='{"model": "VocabularyEntry", "action": "delete", "primary_key": {{ve.ve_id}}}'>Delete</button>
         </div>
     {% endfor %}
 {% endif %}

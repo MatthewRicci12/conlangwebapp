@@ -28,6 +28,22 @@ def index(request):
     else:
         submit_text_form = SubmitTextForm()
 
+    if 'primary_key' in request.POST:
+        model = "Text"
+        action = "update"
+        primary_key = int(request.POST['primary_key'])
+        params = {}
+        if 'params' in request.POST:
+            params = json.loads(request.POST['params'])
+        crud_router(model, action, primary_key, params)
+
+    if 'primary_key' in request.GET:
+        model = "Text"
+        action = "delete"
+        primary_key = int(request.GET['primary_key'])
+        params = {'primary_key': primary_key}
+        crud_router(model, action, primary_key, params)
+
     texts = Text.objects.all().order_by('-date_added')
     upload_file_form = UploadFileForm()
     context = {
@@ -122,6 +138,23 @@ def vocabulary_list(request):
     context = {'ves': []}
     for ve in VocabularyEntry.objects.all():
         context['ves'].append(ve)
+
+    if 'primary_key' in request.POST:
+        model = "Text"
+        action = "update"
+        primary_key = int(request.POST['primary_key'])
+        params = {}
+        if 'params' in request.POST:
+            params = json.loads(request.POST['params'])
+        crud_router(model, action, primary_key, params)
+
+    if 'primary_key' in request.GET:
+        model = "Text"
+        action = "delete"
+        primary_key = int(request.GET['primary_key'])
+        params = {'primary_key': primary_key}
+        crud_router(model, action, primary_key, params)
+
     return render(request, 'vocabulary_list.html', context)
 
 
@@ -152,50 +185,68 @@ def phonology_and_glyphs_tab(request):
         context['currently_selected_glyph_id'] = None
     context['selected_ipa_symbol'] = selected_ipa_symbol
 
+    if 'primary_key' in request.POST:
+        model = "Text"
+        action = "update"
+        primary_key = int(request.POST['primary_key'])
+        params = {}
+        if 'params' in request.POST:
+            params = json.loads(request.POST['params'])
+        crud_router(model, action, primary_key, params)
+
+    if 'primary_key' in request.GET:
+        model = "Text"
+        action = "delete"
+        primary_key = int(request.GET['primary_key'])
+        params = {'primary_key': primary_key}
+        crud_router(model, action, primary_key, params)
+
     return render(request, 'phonology_and_glyphs_tab.html', context)
 
 def grammar_tab(request):
     context = {'gns': []}
     for gn in GrammarNote.objects.all():
         context['gns'].append(gn)
+
+    if 'primary_key' in request.POST:
+        model = "Text"
+        action = "update"
+        primary_key = int(request.POST['primary_key'])
+        params = {}
+        if 'params' in request.POST:
+            params = json.loads(request.POST['params'])
+        crud_router(model, action, primary_key, params)
+
+    if 'primary_key' in request.GET:
+        model = "Text"
+        action = "delete"
+        primary_key = int(request.GET['primary_key'])
+        params = {'primary_key': primary_key}
+        crud_router(model, action, primary_key, params)
+
     return render(request, 'grammar_tab.html', context)
 
-@require_http_methods(["POST"])
-def crud_router(request):
-    print("Crud router called")
-
-    model = request.POST['model']
-    action = request.POST['action']
-    primary_key = request.POST['primary_key']
-    params = {}
-    if 'params' in request.POST:
-        params = json.loads(request.POST['params'])
+def crud_router(model, action, primary_key, params):
     params['primary_key'] = primary_key
-
     crud_map[(model, action)](params)
-    return HttpResponse('')
 
 @require_http_methods(["GET"])
 def modal(request):
-    params = json.loads(request.GET['params'])
+    pk = request.GET['primary_key']
     model = request.GET['model']
 
     context = {}
 
     if model == "Glyph":
-        glyph_id = params['glyph_id']
-        context = {'which_model': 'Glyph', 'pk': glyph_id, 'form': GlyphForm(request.POST)}
+        context = {'which_model': 'Glyph', 'pk': pk, 'form': GlyphForm(request.POST)}
 
     if model == "Text":
-        text_id = params['text_id']
-        context = {'which_model': 'Text', 'pk': text_id, 'form': SubmitTextForm(request.POST)}
+        context = {'which_model': 'Text', 'pk': pk, 'form': SubmitTextForm(request.POST)}
 
     if model == "VocabularyEntry":
-        ve_id = params['ve_id']
-        context = {'which_model': 'VocabularyEntry', 'pk': ve_id, 'form': VocabularyEntryForm(request.POST)}
+        context = {'which_model': 'VocabularyEntry', 'pk': pk, 'form': VocabularyEntryForm(request.POST)}
 
     if model == "GrammarNote":
-        gn_id = params['gn_id']
-        context = {'which_model': 'GrammarNote', 'pk': gn_id, 'form': GrammarNoteForm(request.POST)}
+        context = {'which_model': 'GrammarNote', 'pk': pk, 'form': GrammarNoteForm(request.POST)}
 
     return render(request, 'partials/modal.html', context=context)

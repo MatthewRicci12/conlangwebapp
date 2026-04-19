@@ -16,12 +16,14 @@
 </head>
 <body>
 
+<!--TABS-->
 <div id="tabs">
   <a href="{% url 'vocabulary-list' %}" class="button">Vocabulary List</a>
   <a href="{% url 'phonology-and-glyphs-tab' %}" class="button">Glyphs and Phonology Mappings</a>
   <a href="{% url 'grammar-tab' %}" class="button">Grammar Notes</a>
 </div>
 
+<!--LIST OF TEXTS-->
 <div id="text_list">
     {% if texts %}
         {% for text in texts %}
@@ -30,7 +32,7 @@
     {% endif %}
 </div>
 
-
+<!--FORM WHERE YOU MANUALLY SUBMIT A TEXT TITLE AND BODY-->
 <form id="submit_text_form" hx-post="{% url 'index' %}" hx-target="body" autocomplete="off">
     {% csrf_token %}
     <p>Enter title here:</p>
@@ -40,7 +42,10 @@
     <br>
     <input type="submit" value="Submit" form="submit_text_form" style="margin-top: 10px">
 </form>
+
 <br>
+
+<!--UPLOAD TEXT VIA FILE-->
 <form id="upload_file_form" hx-post="{% url 'handle-file' %}" hx-target="body" hx-encoding="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     <p>Or optionally upload from file:</p>

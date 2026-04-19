@@ -26,9 +26,32 @@
       console.log(value);
     }
 
-    htmx.ajax('POST', '{% url "crud-router" %}', {
+    var url = null
+    switch ({{ which_model }}) {
+        case "Text":
+        url = '{% url "index" %}'
+        break;
+
+        case "Glyph":
+        url = '{% url "phonology-and-glyphs-tab" %}'
+        break;
+
+        case "VocabularyEntry":
+        url = '{% url "vocabulary-list" %}'
+        break;
+
+        case "GrammarNote":
+        url = '{% url "grammar-tab" %}'
+        break;
+
+        default:
+        url = ''
+    }
+
+
+    htmx.ajax('POST', url, {
       target: 'body',
-      swap: 'beforeend',
+      action: 'update',
       values: {
         model: "{{ which_model }}",
         action: "update",

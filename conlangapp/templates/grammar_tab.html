@@ -18,11 +18,13 @@
 
 {% if gns %}
     {% for gn in gns %}
+        <!--GRAMMAR NOTE DIV-->
         <div>
             <h1>{{gn.title}}</h1>
             <p>{{gn.body}}</p>
-            <button hx-get="{% url 'modal' %}" hx-target="body" hx-swap="beforeend" hx-vals='{"model": "GrammarNote", "action": "update", "params": "{\"gn_id\": \"{{gn.gn_id}}\"}"}'>Update</button>
-            <button hx-post="{% url 'crud-router' %}" hx-swap="none" hx-vals='{"model": "GrammarNote", "action": "delete", "primary_key": {{gn.gn_id}}}'>Delete</button>
+            <!--UPDATE/DELETE BUTTONS-->
+            <button hx-get="{% url 'modal' %}" hx-target="body" hx-vals='{"model": "GrammarNote", "action": "update", "primary_key": {{text.text_id}}}'>Update</button>
+            <button hx-get="{% url 'grammar-tab' %}" hx-target="body" hx-vals='{"model": "GrammarNote", "action": "delete", "primary_key": {{gn.gn_id}}}'>Delete</button>
         </div>
     {% endfor %}
 {% endif %}
