@@ -23,7 +23,7 @@
     const dataAsObj = Object.fromEntries(data.entries());
 
     var url = null
-    switch ({{ which_model }}) {
+    switch ("{{ which_model }}") {
         case "Text":
         url = '{% url "index" %}'
         break;
@@ -43,7 +43,6 @@
         default:
         url = ''
     }
-
 
     htmx.ajax('POST', url, {
       target: 'body',

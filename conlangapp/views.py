@@ -148,26 +148,18 @@ def user_clicks_text(request, text_id):
 
 # @login_required
 def vocabulary_list(request):
-    context = {'ves': []}
-    for ve in VocabularyEntry.objects.all():
-        context['ves'].append(ve)
-
     if 'primary_key' in request.POST:
-        model = "VocabularyEntry"
-        action = "update"
+        model = request.POST.get('model', 'VocabularyEntry')
         primary_key = int(request.POST['primary_key'])
-        params = {}
-        if 'params' in request.POST:
-            params = json.loads(request.POST['params'])
-        crud_router(model, action, primary_key, params)
+        params = json.loads(request.POST['params']) if 'params' in request.POST else {}
+        crud_router(model, 'update', primary_key, params)
 
     if 'primary_key' in request.GET:
-        model = "VocabularyEntry"
-        action = "delete"
+        model = request.GET.get('model', 'VocabularyEntry')
         primary_key = int(request.GET['primary_key'])
-        params = {'primary_key': primary_key}
-        crud_router(model, action, primary_key, params)
+        crud_router(model, 'delete', primary_key, {'primary_key': primary_key})
 
+    context = {'ves': list(VocabularyEntry.objects.all())}
     return render(request, 'vocabulary_list.html', context)
 
 
@@ -175,7 +167,7 @@ def vocabulary_list(request):
 def create_phonology_mapping(request):
     selected_ipa_symbol = request.POST['selected_ipa_symbol']
     selected_glyph_pk = request.POST['selected_glyph_pk']
-    pm = PhonologyMapping.objects.create(ipa_symbol=selected_ipa_symbol, user=request.user)
+    pm = PhonologyMapping.objects.create(ipa_symbol=selected_ipa_symbol, user=request.user if request.user.is_authenticated else None)
     pm.save()
     glyph = Glyph.objects.get(pk=selected_glyph_pk)
     glyph.phonology_mappings.add(pm)
@@ -183,9 +175,7 @@ def create_phonology_mapping(request):
 
 # @login_required
 def phonology_and_glyphs_tab(request):
-    context = {'glyphs': []}
-    for glyph in Glyph.objects.all():
-        context['glyphs'].append(glyph)
+    context = {'glyphs': list(Glyph.objects.all())}
 
     currently_selected_glyph_id = None
     if 'glyph_id' in request.POST:
@@ -201,20 +191,15 @@ def phonology_and_glyphs_tab(request):
     context['selected_ipa_symbol'] = selected_ipa_symbol
 
     if 'primary_key' in request.POST:
-        model = "Glyph"
-        action = "update"
+        model = request.POST.get('model', 'Glyph')
         primary_key = int(request.POST['primary_key'])
-        params = {}
-        if 'params' in request.POST:
-            params = json.loads(request.POST['params'])
-        crud_router(model, action, primary_key, params)
+        params = json.loads(request.POST['params']) if 'params' in request.POST else {}
+        crud_router(model, 'update', primary_key, params)
 
     if 'primary_key' in request.GET:
-        model = "Glyph"
-        action = "delete"
+        model = request.GET.get('model', 'Glyph')
         primary_key = int(request.GET['primary_key'])
-        params = {'primary_key': primary_key}
-        crud_router(model, action, primary_key, params)
+        crud_router(model, 'delete', primary_key, {'primary_key': primary_key})
 
     return render(request, 'phonology_and_glyphs_tab.html', context)
 
