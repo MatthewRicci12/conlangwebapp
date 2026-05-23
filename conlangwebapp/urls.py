@@ -22,7 +22,7 @@ from conlangapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('conlangapp.urls')),
-    path('log_in/', views.log_in, name='login'),
-    path('sign_up/', views.sign_up, name='sign-up'),
-    path('accounts/', include('django.contrib.auth.urls'))
+    # path('log_in/', views.log_in, name='login'),
+    # path('sign_up/', views.sign_up, name='sign-up'),
+    # path('accounts/', include('django.contrib.auth.urls'))
 ]

@@ -21,7 +21,7 @@ crud_map = {
     ('Glyph', 'delete'): delete_glyph,
 }
 
-@login_required
+# # @login_required
 def index(request):
     if request.method == 'POST':
         submit_text_form = SubmitTextForm(request.POST)
@@ -61,7 +61,7 @@ def index(request):
 
 # TODO: Better way to do this handoff? Perhaps with a common helper function?
 
-@login_required
+# @login_required
 @require_http_methods(['POST'])
 def handle_file(request):
     form = UploadFileForm(request.POST, request.FILES)
@@ -85,16 +85,16 @@ def handle_file(request):
     else:
         return HttpResponse(status=405)
 
-@login_required
+# @login_required
 def submit_token(request, text_id):
     return render(request, 'partials/current_form.html')
 
 
-@login_required
+# @login_required
 def enter_text_screen(request):
     return render(request, 'enter_text_screen.html')
 
-@login_required
+# @login_required
 def user_clicks_text(request, text_id):
     text_content = Text.objects.get(text_id=text_id).body
     form_div_context = {'text_id': text_id}
@@ -148,7 +148,7 @@ def user_clicks_text(request, text_id):
     return render(request, 'extract_text.html', context)
 
 
-@login_required
+# @login_required
 def vocabulary_list(request):
     context = {'ves': []}
     for ve in VocabularyEntry.objects.all():
@@ -173,7 +173,7 @@ def vocabulary_list(request):
     return render(request, 'vocabulary_list.html', context)
 
 
-@login_required
+# @login_required
 def create_phonology_mapping(request):
     selected_ipa_symbol = request.POST['selected_ipa_symbol']
     selected_glyph_pk = request.POST['selected_glyph_pk']
@@ -184,7 +184,7 @@ def create_phonology_mapping(request):
     glyph.phonology_mappings.add(pm)
 
 
-@login_required
+# @login_required
 def phonology_and_glyphs_tab(request):
     context = {'glyphs': []}
     for glyph in Glyph.objects.all():
@@ -221,7 +221,7 @@ def phonology_and_glyphs_tab(request):
 
     return render(request, 'phonology_and_glyphs_tab.html', context)
 
-@login_required
+# @login_required
 def grammar_tab(request):
     context = {'gns': []}
     for gn in GrammarNote.objects.all():
@@ -245,12 +245,12 @@ def grammar_tab(request):
 
     return render(request, 'grammar_tab.html', context)
 
-@login_required
+# # @login_required
 def crud_router(model, action, primary_key, params):
     params['primary_key'] = primary_key
     crud_map[(model, action)](params)
 
-@login_required
+# @login_required
 @require_http_methods(["GET"])
 def modal(request):
     pk = request.GET['primary_key']
