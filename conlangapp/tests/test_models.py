@@ -96,3 +96,153 @@ class GrammarNoteModelTest(TestCase):
 
     def test_grammar_note_accessible_from_user(self):
         self.assertIn(self.note, self.user.grammar_notes.all())
+
+
+
+class VocabularyEntryModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="u", email="u@x.com", password="pw")
+        self.entry = VocabularyEntry.objects.create(
+            definition="a feline animal",
+            part_of_speech=VocabularyEntry.PartOfSpeech.NOUN,
+            user=self.user,
+        )
+
+    def test_vocabulary_entry_created(self):
+        self.assertEqual(VocabularyEntry.objects.count(), 1)
+
+    def test_vocabulary_entry_has_pk(self):
+        self.assertIsNotNone(self.entry.ve_id)
+
+    def test_default_part_of_speech(self):
+        entry = VocabularyEntry.objects.create(definition="thing", user=self.user)
+        self.assertEqual(entry.part_of_speech, VocabularyEntry.PartOfSpeech.UNDECIDED)
+
+    def test_part_of_speech_choices(self):
+        for member in VocabularyEntry.PartOfSpeech:
+            entry = VocabularyEntry.objects.create(
+                definition="word", part_of_speech=member, user=self.user
+            )
+            self.assertEqual(entry.part_of_speech, member)
+
+    def test_grammar_tag_nullable(self):
+        entry = VocabularyEntry.objects.create(definition="word", user=self.user)
+        self.assertIsNone(entry.grammar_tag)
+
+    def test_vocabulary_entry_fk_to_user(self):
+        self.assertEqual(self.entry.user, self.user)
+
+    def test_vocabulary_entry_deleted_with_user(self):
+        self.user.delete()
+        self.assertEqual(VocabularyEntry.objects.count(), 0)
+
+    def test_vocabulary_entry_accessible_from_user(self):
+        self.assertIn(self.entry, self.user.vocabulary_entries.all())
+
+
+class TextModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="u", email="u@x.com", password="pw")
+        self.text = Text.objects.create(
+            title="Story", body="Once upon a time...", user=self.user
+        )
+
+    def test_text_created(self):
+        self.assertEqual(Text.objects.count(), 1)
+
+    def test_text_has_pk(self):
+        self.assertIsNotNone(self.text.text_id)
+
+    def test_default_title(self):
+        text = Text.objects.create(body="...", user=self.user)
+        self.assertEqual(text.title, "Title")
+
+    def test_date_added_auto_set(self):
+        self.assertIsNotNone(self.text.date_added)
+
+    def test_text_fk_to_user(self):
+        self.assertEqual(self.text.user, self.user)
+
+    def test_text_deleted_with_user(self):
+        self.user.delete()
+        self.assertEqual(Text.objects.count(), 0)
+
+    def test_text_accessible_from_user(self):
+        self.assertIn(self.text, self.user.texts.all())
+
+
+class PhonologyMappingModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="u", email="u@x.com", password="pw")
+        self.pm = PhonologyMapping.objects.create(
+            ipa_symbol="p",
+            phonological_status=PhonologyMapping.PhonologicalStatus.PHONEME,
+            distribution="word-initial",
+            user=self.user,
+        )
+
+    def test_phonology_mapping_created(self):
+        self.assertEqual(PhonologyMapping.objects.count(), 1)
+
+    def test_phonology_mapping_has_pk(self):
+        self.assertIsNotNone(self.pm.pm_id)
+
+    def test_default_phonological_status(self):
+        pm = PhonologyMapping.objects.create(user=self.user)
+        self.assertEqual(pm.phonological_status, PhonologyMapping.PhonologicalStatus.UNDECIDED)
+
+    def test_ipa_symbol_nullable(self):
+        pm = PhonologyMapping.objects.create(user=self.user)
+        self.assertIsNone(pm.ipa_symbol)
+
+    def test_phonology_mapping_fk_to_user(self):
+        self.assertEqual(self.pm.user, self.user)
+
+    def test_phonology_mapping_deleted_with_user(self):
+        self.user.delete()
+        self.assertEqual(PhonologyMapping.objects.count(), 0)
+
+    def test_phonology_mapping_accessible_from_user(self):
+        self.assertIn(self.pm, self.user.phonology_mappings.all())
+
+
+class GlyphModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="u", email="u@x.com", password="pw")
+        self.pm1 = PhonologyMapping.objects.create(ipa_symbol="p", user=self.user)
+        self.pm2 = PhonologyMapping.objects.create(ipa_symbol="b", user=self.user)
+        self.glyph = Glyph.objects.create(glyph_string="π", user=self.user)
+        self.glyph.phonology_mappings.set([self.pm1, self.pm2])
+
+    def test_glyph_created(self):
+        self.assertEqual(Glyph.objects.count(), 1)
+
+    def test_glyph_has_pk(self):
+        self.assertIsNotNone(self.glyph.glyph_id)
+
+    def test_glyph_string(self):
+        self.assertEqual(self.glyph.glyph_string, "π")
+
+    def test_glyph_fk_to_user(self):
+        self.assertEqual(self.glyph.user, self.user)
+
+    def test_glyph_m2m_phonology_mappings(self):
+        self.assertIn(self.pm1, self.glyph.phonology_mappings.all())
+        self.assertIn(self.pm2, self.glyph.phonology_mappings.all())
+
+    def test_glyph_reverse_m2m(self):
+        self.assertIn(self.glyph, self.pm1.glyphs.all())
+
+    def test_glyph_deleted_with_user(self):
+        self.user.delete()
+        self.assertEqual(Glyph.objects.count(), 0)
+
+    def test_m2m_survives_one_pm_deletion(self):
+        # Deleting one PM should only remove it from the M2M, not the glyph
+        self.pm1.delete()
+        self.glyph.refresh_from_db()
+        self.assertEqual(self.glyph.phonology_mappings.count(), 1)
+        self.assertIn(self.pm2, self.glyph.phonology_mappings.all())
+
+    def test_glyph_accessible_from_user(self):
+        self.assertIn(self.glyph, self.user.glyphs.all())
