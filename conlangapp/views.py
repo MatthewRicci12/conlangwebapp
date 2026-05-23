@@ -28,7 +28,7 @@ def index(request):
         submit_text_form = SubmitTextForm(request.POST)
         if submit_text_form.is_valid():
             text = submit_text_form.save(commit=False)
-            text.user = request.user
+            text.user = request.user if request.user.is_authenticated else None
             text.save()
             return redirect('index')
     else:

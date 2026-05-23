@@ -29,6 +29,8 @@
         {% for text in texts %}
             {% include 'partials/text_entry.html' %}
         {% endfor %}
+    {% else %}
+        <p class="empty-state-text">No texts yet — add one below.</p>
     {% endif %}
 </div>
 
