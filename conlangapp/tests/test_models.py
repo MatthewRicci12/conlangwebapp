@@ -42,9 +42,57 @@ class UserTestCase(TestCase):
 
 
 class TokenTest(TestCase):
-    @classmethod
-    def setUpTestData(self):
+    def setUp(self):
         self.user = User.objects.create_user(username="Matthew123", email="MatthewRicci@mattmail.com", password="VeryStrongPassword456")
         self.token = Token.objects.create(surface_form="hello", user=self.user)
 
-        
+    def test_token_created(self):
+        self.assertEqual(Token.objects.count(), 1)
+
+    def test_token_has_pk(self):
+        self.assertIsNotNone(self.token.token_id)
+
+    def test_token_surface_form(self):
+        self.assertEqual(self.token.surface_form, "hello")
+
+    def test_token_fk_to_user(self):
+        self.assertEqual(self.token.user, self.user)
+
+    def test_token_deleted_with_user(self):
+        self.user.delete()
+        self.assertEqual(Token.objects.count(), 0)
+
+    def test_token_accessible_from_user(self):
+        self.assertIn(self.token, self.user.tokens.all())
+
+
+class GrammarNoteModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="u", email="u@x.com", password="pw")
+        self.note = GrammarNote.objects.create(
+            title="My Note", body="Some grammar content.", user=self.user
+        )
+
+    def test_grammar_note_created(self):
+        self.assertEqual(GrammarNote.objects.count(), 1)
+
+    def test_grammar_note_has_pk(self):
+        self.assertIsNotNone(self.note.gn_id)
+
+    def test_default_title(self):
+        note = GrammarNote.objects.create(user=self.user)
+        self.assertEqual(note.title, "Grammar Note")
+
+    def test_body_can_be_blank(self):
+        note = GrammarNote.objects.create(user=self.user, body="")
+        self.assertEqual(note.body, "")
+
+    def test_grammar_note_fk_to_user(self):
+        self.assertEqual(self.note.user, self.user)
+
+    def test_grammar_note_deleted_with_user(self):
+        self.user.delete()
+        self.assertEqual(GrammarNote.objects.count(), 0)
+
+    def test_grammar_note_accessible_from_user(self):
+        self.assertIn(self.note, self.user.grammar_notes.all())
