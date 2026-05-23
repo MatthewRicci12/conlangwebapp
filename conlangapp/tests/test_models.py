@@ -7,7 +7,7 @@ from ..models import *
 # of that use-case (for example, a class to test that a model field is properly validated, with functions to test each of the possible failure
 # cases). Again, the structure is very much up to you, but it is best if you are consistent.
 
-class YourTestClass(TestCase):
+class UserTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         print("setUpTestData: Run once to set up non-modified data for all class methods.")
@@ -39,3 +39,12 @@ class YourTestClass(TestCase):
     def test_password_is_hashed(self):
         self.assertNotEqual(self.user.password, "VeryStrongPassword456")
         self.assertTrue(self.user.check_password("VeryStrongPassword456"))
+
+
+class TokenTest(TestCase):
+    @classmethod
+    def setUpTestData(self):
+        self.user = User.objects.create_user(username="Matthew123", email="MatthewRicci@mattmail.com", password="VeryStrongPassword456")
+        self.token = Token.objects.create(surface_form="hello", user=self.user)
+
+        
