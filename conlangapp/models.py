@@ -11,14 +11,14 @@ class Token(models.Model):
     surface_form = models.CharField(max_length=255)
 
     token_id = models.AutoField(primary_key=True) #Not needed; Django adds automatically
-    user = models.ForeignKey(User, default=None, on_delete=models.CASCADE, db_constraint=True, related_name="tokens")  # db_costraint True by default, says constraint SHOULD be created
+    user = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE, db_constraint=True, related_name="tokens")  # db_costraint True by default, says constraint SHOULD be created
 
 class GrammarNote(models.Model):
     title = models.CharField(max_length=255, default=f"Grammar Note") #TODO Get index dynamically
     body = models.TextField(blank=True)
 
     gn_id = models.AutoField(primary_key=True) #Not needed; Django adds automatically
-    user = models.ForeignKey(User, default=None, on_delete=models.CASCADE, db_constraint=True, related_name="grammar_notes") #db_costraint True by default, says constraint SHOULD be created
+    user = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE, db_constraint=True, related_name="grammar_notes") #db_costraint True by default, says constraint SHOULD be created
     tokens = models.CharField(max_length=255, default="")
 
 
@@ -45,7 +45,7 @@ class VocabularyEntry(models.Model):
 
     grammar_tag = models.CharField(null=True, max_length=255) #No implementation yet
     ve_id = models.AutoField(primary_key=True)  # Not needed; Django adds automatically
-    user = models.ForeignKey(User, default=None,  on_delete=models.CASCADE, db_constraint=True, related_name="vocabulary_entries")  # db_costraint True by default, says constraint SHOULD be created
+    user = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE, db_constraint=True, related_name="vocabulary_entries")  # db_costraint True by default, says constraint SHOULD be created
 
 
 
@@ -55,7 +55,7 @@ class Text(models.Model):
 
     date_added = models.DateTimeField(null=False, default=timezone.now)
     text_id = models.AutoField(primary_key=True)  # Not needed; Django adds automatically
-    user = models.ForeignKey(User, default=None,  on_delete=models.CASCADE, db_constraint=True, related_name="texts")  # db_costraint True by default, says constraint SHOULD be created
+    user = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE, db_constraint=True, related_name="texts")  # db_costraint True by default, says constraint SHOULD be created
 
 class PhonologyMapping(models.Model):
     class PhonologicalStatus(models.IntegerChoices):
@@ -67,11 +67,11 @@ class PhonologyMapping(models.Model):
     ipa_symbol = models.CharField(null=True, max_length=10)
     phonological_status = models.IntegerField(choices=PhonologicalStatus, default=PhonologicalStatus.UNDECIDED)
     distribution = models.CharField(null=True, max_length=255)
-    user = models.ForeignKey(User, default=None, on_delete=models.CASCADE, db_constraint=True, related_name="phonology_mappings")
+    user = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE, db_constraint=True, related_name="phonology_mappings")
     pm_id = models.AutoField(primary_key=True)
 
 class Glyph(models.Model):
     glyph_string = models.CharField(max_length=10)
     glyph_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, default=None,  on_delete=models.CASCADE, db_constraint=True, related_name="glyphs")
+    user = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE, db_constraint=True, related_name="glyphs")
     phonology_mappings = models.ManyToManyField(PhonologyMapping, related_name="glyphs")

@@ -73,7 +73,7 @@ def handle_file(request):
             title=file_name_stripped,
             body=file_contents,
             date_added=timezone.now(),
-            user = request.user
+            user = request.user if request.user.is_authenticated else None
         )
         text.save()
 
@@ -124,18 +124,18 @@ def user_clicks_text(request, text_id):
                 part_of_speech = request.POST['part_of_speech']
                 definition = request.POST['definition']
                 vocabulary_entry = VocabularyEntry(part_of_speech=part_of_speech, definition=definition, tokens=request.POST['token'])
-                vocabulary_entry.user = request.user
+                vocabulary_entry.user = request.user if request.user.is_authenticated else None
                 vocabulary_entry.save()
 
             elif selected_form == "glyph_form":
                 glyph = Glyph(glyph_string=request.POST['token'])
-                glyph.user = request.user
+                glyph.user = request.user if request.user.is_authenticated else None
                 glyph.save()
 
             elif selected_form == "grammar_note_form":
                 grammar_note_body = request.POST['body']
                 grammar_note = GrammarNote(body=grammar_note_body, title=request.POST['token'])
-                grammar_note.user = request.user
+                grammar_note.user = request.user if request.user.is_authenticated else None
                 grammar_note.save()
 
     else:
@@ -220,26 +220,18 @@ def phonology_and_glyphs_tab(request):
 
 # @login_required
 def grammar_tab(request):
-    context = {'gns': []}
-    for gn in GrammarNote.objects.all():
-        context['gns'].append(gn)
-
     if 'primary_key' in request.POST:
-        model = "GrammarNote"
-        action = "update"
+        model = request.POST.get('model', 'GrammarNote')
         primary_key = int(request.POST['primary_key'])
-        params = {}
-        if 'params' in request.POST:
-            params = json.loads(request.POST['params'])
-        crud_router(model, action, primary_key, params)
+        params = json.loads(request.POST['params']) if 'params' in request.POST else {}
+        crud_router(model, 'update', primary_key, params)
 
     if 'primary_key' in request.GET:
-        model = "GrammarNote"
-        action = "delete"
+        model = request.GET.get('model', 'GrammarNote')
         primary_key = int(request.GET['primary_key'])
-        params = {'primary_key': primary_key}
-        crud_router(model, action, primary_key, params)
+        crud_router(model, 'delete', primary_key, {'primary_key': primary_key})
 
+    context = {'gns': list(GrammarNote.objects.all())}
     return render(request, 'grammar_tab.html', context)
 
 # # @login_required
