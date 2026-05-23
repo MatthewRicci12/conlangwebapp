@@ -155,7 +155,7 @@ def vocabulary_list(request):
         context['ves'].append(ve)
 
     if 'primary_key' in request.POST:
-        model = "Text"
+        model = "VocabularyEntry"
         action = "update"
         primary_key = int(request.POST['primary_key'])
         params = {}
@@ -164,7 +164,7 @@ def vocabulary_list(request):
         crud_router(model, action, primary_key, params)
 
     if 'primary_key' in request.GET:
-        model = "Text"
+        model = "VocabularyEntry"
         action = "delete"
         primary_key = int(request.GET['primary_key'])
         params = {'primary_key': primary_key}
@@ -204,7 +204,7 @@ def phonology_and_glyphs_tab(request):
     context['selected_ipa_symbol'] = selected_ipa_symbol
 
     if 'primary_key' in request.POST:
-        model = "Text"
+        model = "Glyph"
         action = "update"
         primary_key = int(request.POST['primary_key'])
         params = {}
@@ -213,7 +213,7 @@ def phonology_and_glyphs_tab(request):
         crud_router(model, action, primary_key, params)
 
     if 'primary_key' in request.GET:
-        model = "Text"
+        model = "Glyph"
         action = "delete"
         primary_key = int(request.GET['primary_key'])
         params = {'primary_key': primary_key}
@@ -228,7 +228,7 @@ def grammar_tab(request):
         context['gns'].append(gn)
 
     if 'primary_key' in request.POST:
-        model = "Text"
+        model = "GrammarNote"
         action = "update"
         primary_key = int(request.POST['primary_key'])
         params = {}
@@ -237,7 +237,7 @@ def grammar_tab(request):
         crud_router(model, action, primary_key, params)
 
     if 'primary_key' in request.GET:
-        model = "Text"
+        model = "GrammarNote"
         action = "delete"
         primary_key = int(request.GET['primary_key'])
         params = {'primary_key': primary_key}
