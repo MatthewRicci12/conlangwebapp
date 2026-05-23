@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        </div>
+
+        <div>
+        {{ form.password.label_tag }}
+        {{ form.password }}
+        </div>
+        <p>Don't have an account? Create one <a href="/sign_up">Here</a>!</p>
+        <button type="submit">Log in</button>
+    </form>
+
+</body>
+</html>

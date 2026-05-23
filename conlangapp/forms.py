@@ -1,6 +1,15 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.forms import ChoiceField
 from .models import *
+
+# Always get whatever AUTH_USER_MODEL points to instead of importing User directly
+
+class UserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2'] #TODO: Add email
+
 
 class SubmitTextForm(forms.ModelForm):
     title = forms.CharField()

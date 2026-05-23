@@ -1,6 +1,10 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from .forms import *
 from pathlib import Path
 from .crud.crud import *
@@ -17,12 +21,13 @@ crud_map = {
     ('Glyph', 'delete'): delete_glyph,
 }
 
+@login_required
 def index(request):
     if request.method == 'POST':
         submit_text_form = SubmitTextForm(request.POST)
         if submit_text_form.is_valid():
             text = submit_text_form.save(commit=False)
-            text.user = request.user if text.user else None
+            text.user = request.user
             text.save()
             return redirect('index')
     else:
@@ -55,6 +60,8 @@ def index(request):
 
 
 # TODO: Better way to do this handoff? Perhaps with a common helper function?
+
+@login_required
 @require_http_methods(['POST'])
 def handle_file(request):
     form = UploadFileForm(request.POST, request.FILES)
@@ -68,6 +75,7 @@ def handle_file(request):
             title=file_name_stripped,
             body=file_contents,
             date_added=timezone.now(),
+            user = request.user
         )
         text.save()
 
@@ -77,13 +85,16 @@ def handle_file(request):
     else:
         return HttpResponse(status=405)
 
+@login_required
 def submit_token(request, text_id):
     return render(request, 'partials/current_form.html')
 
 
+@login_required
 def enter_text_screen(request):
     return render(request, 'enter_text_screen.html')
 
+@login_required
 def user_clicks_text(request, text_id):
     text_content = Text.objects.get(text_id=text_id).body
     form_div_context = {'text_id': text_id}
@@ -115,15 +126,18 @@ def user_clicks_text(request, text_id):
                 part_of_speech = request.POST['part_of_speech']
                 definition = request.POST['definition']
                 vocabulary_entry = VocabularyEntry(part_of_speech=part_of_speech, definition=definition, tokens=request.POST['token'])
+                vocabulary_entry.user = request.user
                 vocabulary_entry.save()
 
             elif selected_form == "glyph_form":
                 glyph = Glyph(glyph_string=request.POST['token'])
+                glyph.user = request.user
                 glyph.save()
 
             elif selected_form == "grammar_note_form":
                 grammar_note_body = request.POST['body']
                 grammar_note = GrammarNote(body=grammar_note_body, title=request.POST['token'])
+                grammar_note.user = request.user
                 grammar_note.save()
 
     else:
@@ -134,6 +148,7 @@ def user_clicks_text(request, text_id):
     return render(request, 'extract_text.html', context)
 
 
+@login_required
 def vocabulary_list(request):
     context = {'ves': []}
     for ve in VocabularyEntry.objects.all():
@@ -158,15 +173,18 @@ def vocabulary_list(request):
     return render(request, 'vocabulary_list.html', context)
 
 
+@login_required
 def create_phonology_mapping(request):
     selected_ipa_symbol = request.POST['selected_ipa_symbol']
     selected_glyph_pk = request.POST['selected_glyph_pk']
     pm = PhonologyMapping(ipa_symbol=selected_ipa_symbol)
+    pm.user = request.user
     pm.save()
     glyph = Glyph.objects.get(pk=selected_glyph_pk)
     glyph.phonology_mappings.add(pm)
 
 
+@login_required
 def phonology_and_glyphs_tab(request):
     context = {'glyphs': []}
     for glyph in Glyph.objects.all():
@@ -203,6 +221,7 @@ def phonology_and_glyphs_tab(request):
 
     return render(request, 'phonology_and_glyphs_tab.html', context)
 
+@login_required
 def grammar_tab(request):
     context = {'gns': []}
     for gn in GrammarNote.objects.all():
@@ -226,10 +245,12 @@ def grammar_tab(request):
 
     return render(request, 'grammar_tab.html', context)
 
+@login_required
 def crud_router(model, action, primary_key, params):
     params['primary_key'] = primary_key
     crud_map[(model, action)](params)
 
+@login_required
 @require_http_methods(["GET"])
 def modal(request):
     pk = request.GET['primary_key']
@@ -250,3 +271,31 @@ def modal(request):
         context = {'which_model': 'GrammarNote', 'pk': pk, 'form': GrammarNoteForm(request.POST)}
 
     return render(request, 'partials/modal.html', context=context)
+
+def log_in(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('/')
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'registration/login.html', {'form': form})
+
+def sign_up(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password1'])
+            user.save()
+            login(request, user)
+            return redirect('/')
+        else:
+            print(form.errors)
+    else:
+        form = UserForm()
+
+    return render(request, 'registration/sign_up.html', {"form": form})

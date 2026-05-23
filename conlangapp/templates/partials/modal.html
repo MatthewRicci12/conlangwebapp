@@ -22,10 +22,6 @@
     const values = data.values()
     const dataAsObj = Object.fromEntries(data.entries());
 
-    for (const value of data.values()) {
-      console.log(value);
-    }
-
     var url = null
     switch ({{ which_model }}) {
         case "Text":
@@ -62,7 +58,6 @@
   }
 
   function closeModal() {
-    console.log("I am in closeModal")
     const modal = document.getElementById('modal');
     modal.classList.add('closing');
     setTimeout(() => {

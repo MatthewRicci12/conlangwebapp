@@ -3,7 +3,7 @@ FROM python:3
 WORKDIR /app
  
 # Install dependencies first (cache layer)
-COPY .venv/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
  
 # The actual source is mounted at runtime via volume,

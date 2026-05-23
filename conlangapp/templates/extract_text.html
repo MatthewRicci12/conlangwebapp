@@ -22,8 +22,8 @@
     </div>
 
     {% if form_up %}
-<!--    Context is inherited so probably don't need the with-->
-        {% include 'partials/current_form.html' with form_div_context=form_div_context only%}
+<!--    Context is inherited so probably don't need the with ...  with form_div_context=form_div_context only-->
+        {% include 'partials/current_form.html'%}
     {% endif %}
 </div>
 
@@ -41,14 +41,12 @@
   container.addEventListener('mouseup', () => {
     const selection = window.getSelection().toString();
     if (selection.length > 0) {
-        console.log(`Selection: ${selection}, type: ${typeof(selection)}`)
         submitTokens(selection)
     }
   });
 
   function submitTokens(tokens) {
       var selected_form = {% if not form_up %} 'vocabulary_entry_form' {% else %} {{ selected_form }} {% endif %}
-      console.log(`Selected form: ${selected_form}`)
       htmx.ajax('POST', '{% url "user-clicks-text" text_id %}', {
       target: 'body',
       values: {
