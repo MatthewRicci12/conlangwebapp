@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.db import IntegrityError
-from ..models import *
+from conlangapp.models import *
 
 # Often you will add a test class for each model/view/form you want to test, with individual methods for testing specific functionality.
 # In other cases you may wish to have a separate class for testing a specific use case, with individual test functions that test aspects
@@ -16,7 +16,7 @@ class UserTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username="Matthew123",
-            email="MatthewRicci@mattmail.com",
+            email="Matthew123",
             password="VeryStrongPassword456",
         )
 
@@ -28,9 +28,9 @@ class UserTestCase(TestCase):
     def test_email_is_unique(self):
         with self.assertRaises(IntegrityError):
             User.objects.create_user(
-                username="otheruser",
-                email="test@example.com",
-                password="password",
+                username="Matthew123",
+                email="Matthew123",
+                password="VeryStrongPassword456",
             )
 
     def test_user_has_pk(self):
