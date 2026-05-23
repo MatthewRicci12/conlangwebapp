@@ -67,7 +67,7 @@ class PhonologyMapping(models.Model):
     ipa_symbol = models.CharField(null=True, max_length=10)
     phonological_status = models.IntegerField(choices=PhonologicalStatus, default=PhonologicalStatus.UNDECIDED)
     distribution = models.CharField(null=True, max_length=255)
-    user = models.ForeignKey(User, default=None,  on_delete=models.CASCADE, db_constraint=True, related_name="phonology_mappings")
+    user = models.ForeignKey(User, default=None, on_delete=models.CASCADE, db_constraint=True, related_name="phonology_mappings")
     pm_id = models.AutoField(primary_key=True)
 
 class Glyph(models.Model):

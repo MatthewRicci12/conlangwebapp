@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
@@ -58,9 +59,6 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-
-# TODO: Better way to do this handoff? Perhaps with a common helper function?
-
 # @login_required
 @require_http_methods(['POST'])
 def handle_file(request):
@@ -87,8 +85,8 @@ def handle_file(request):
 
 # @login_required
 def submit_token(request, text_id):
-    return render(request, 'partials/current_form.html')
-
+    form_div_context = {'text_id': text_id, 'token': '', 'selected_form': ''}
+    return render(request, 'partials/current_form.html', {'form_div_context': form_div_context})
 
 # @login_required
 def enter_text_screen(request):
@@ -177,8 +175,7 @@ def vocabulary_list(request):
 def create_phonology_mapping(request):
     selected_ipa_symbol = request.POST['selected_ipa_symbol']
     selected_glyph_pk = request.POST['selected_glyph_pk']
-    pm = PhonologyMapping(ipa_symbol=selected_ipa_symbol)
-    pm.user = request.user
+    pm = PhonologyMapping.objects.create(ipa_symbol=selected_ipa_symbol, user=request.user)
     pm.save()
     glyph = Glyph.objects.get(pk=selected_glyph_pk)
     glyph.phonology_mappings.add(pm)
