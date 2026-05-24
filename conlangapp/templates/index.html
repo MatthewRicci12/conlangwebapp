@@ -37,30 +37,55 @@
             {% include 'partials/text_entry.html' %}
         {% endfor %}
     {% else %}
-        <p class="empty-state-text">No texts yet — add one below.</p>
+        <div class="text-center py-5 text-muted">
+            <p class="empty-state-text">No texts yet — add one below.</p>
+        </div>
     {% endif %}
 </div>
 
-<!--FORM WHERE YOU MANUALLY SUBMIT A TEXT TITLE AND BODY-->
-<form id="submit_text_form" hx-post="{% url 'index' %}" hx-target="body" autocomplete="off">
-    {% csrf_token %}
-    <p>Enter title here:</p>
-    {{submit_text_form.title}}
-    <p>Enter text here:</p>
-    {{submit_text_form.body}}
-    <br>
-    <input type="submit" value="Submit" form="submit_text_form" style="margin-top: 10px">
-</form>
+<div class="row g-3">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title h5 fw-semibold">Add Text Manually</h2>
+          <form id="submit_text_form" hx-post="{% url 'index' %}" hx-target="body" autocomplete="off">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label fw-medium">Title</label>
+              {{ submit_text_form.title }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-medium">Body</label>
+              {{ submit_text_form.body }}
+            </div>
+            <button type="submit" class="btn btn-primary">Add Text</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
 
 <br>
 
 <!--UPLOAD TEXT VIA FILE-->
-<form id="upload_file_form" hx-post="{% url 'handle-file' %}" hx-target="body" hx-encoding="multipart/form-data" autocomplete="off">
-    {% csrf_token %}
-    <p>Or optionally upload from file:</p>
-    {{ upload_file_form.file }}
-    <input type="submit" value="Submit" form="upload_file_form" style="margin-top: 10px">
-</form>
+<div class="col-md-6">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title h5 fw-semibold">Upload from File</h2>
+      <p class="text-secondary mb-3">Import a plain-text file to create a new entry automatically.</p>
+      <form id="upload_file_form" hx-post="{% url 'handle-file' %}" hx-target="body" hx-encoding="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label fw-medium">File</label>
+          {{ upload_file_form.file }}
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
 
 </body>
 </html>
