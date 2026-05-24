@@ -1,9 +1,9 @@
 <h1>Edit vocabulary entry part of speech or definition</h1>
 <form id="edit_ve" onsubmit="submitForm()">
     <p>Edit part of speech:</p>
-    {{form.part_of_speech}}
+    {{ form.part_of_speech }}
     <p>Edit definition for this vocabulary word:</p>
-    {{form.definition}}
+    {{ form.definition }}
     <input type="submit" value="Submit" form="edit_ve">
 </form>
 <button class="btn danger" onclick="closeModal()">Close</button>

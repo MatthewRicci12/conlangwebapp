@@ -86,8 +86,7 @@ def handle_file(request):
 
 # @login_required
 def submit_token(request, text_id):
-    form_div_context = {'text_id': text_id, 'token': '', 'selected_form': ''}
-    return render(request, 'partials/current_form.html', {'form_div_context': form_div_context})
+    return render(request, 'partials/current_form.html')
 
 # @login_required
 def enter_text_screen(request):
@@ -120,24 +119,7 @@ def user_clicks_text(request, text_id):
         form_div_context['selected_form'] = selected_form
 
         if "form_has_been_submitted" in request.POST:
-
-            if selected_form == "vocabulary_entry_form":
-                part_of_speech = request.POST['part_of_speech']
-                definition = request.POST['definition']
-                vocabulary_entry = VocabularyEntry(part_of_speech=part_of_speech, definition=definition, tokens=request.POST['token'])
-                vocabulary_entry.user = request.user if request.user.is_authenticated else None
-                vocabulary_entry.save()
-
-            elif selected_form == "glyph_form":
-                glyph = Glyph(glyph_string=request.POST['token'])
-                glyph.user = request.user if request.user.is_authenticated else None
-                glyph.save()
-
-            elif selected_form == "grammar_note_form":
-                grammar_note_body = request.POST['body']
-                grammar_note = GrammarNote(body=grammar_note_body, title=request.POST['token'])
-                grammar_note.user = request.user if request.user.is_authenticated else None
-                grammar_note.save()
+            handle_form_submit(request, selected_form)
 
     else:
         form_div_context['selected_form'] = 'vocabulary_entry_form' if form_up else ''
@@ -168,7 +150,7 @@ def vocabulary_list(request):
 def create_phonology_mapping(request):
     selected_ipa_symbol = request.POST['selected_ipa_symbol']
     selected_glyph_pk = request.POST['selected_glyph_pk']
-    pm = PhonologyMapping.objects.create(ipa_symbol=selected_ipa_symbol, user=request.user if request.user.is_authenticated else None)
+    pm = PhonologyMapping.objects.create(ipa_symbol=selected_ipa_symbol)
     pm.save()
     glyph = Glyph.objects.get(pk=selected_glyph_pk)
     glyph.phonology_mappings.add(pm)
