@@ -10,6 +10,7 @@ from .forms import *
 from pathlib import Path
 from .crud.crud import *
 import json
+from .utils import *
 
 crud_map = {
     ('Text', 'update'): update_text,
@@ -139,7 +140,7 @@ def user_clicks_text(request, text_id):
                 grammar_note.save()
 
     else:
-        form_div_context['selected_form'] = ''
+        form_div_context['selected_form'] = 'vocabulary_entry_form' if form_up else ''
 
     context = {'text_content': text_content, 'text_id': text_id, 'form_up': form_up, 'params': {'text_id': text_id, 'form_up': form_up, 'selected_form': form_div_context['selected_form']},
                'form_div_context': form_div_context}

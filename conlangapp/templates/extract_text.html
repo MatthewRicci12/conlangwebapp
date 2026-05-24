@@ -33,27 +33,20 @@
 
   container.addEventListener('click', (e) => {
     if (e.target.classList.contains('word')) {
-      clickedWord = e.target.firstChild.data
-      submitTokens(clickedWord)
+      submitTokens(e.target.firstChild.data);
     }
   });
 
   container.addEventListener('mouseup', () => {
-    const selection = window.getSelection().toString();
-    if (selection.length > 0) {
-        submitTokens(selection)
-    }
+    const selection = window.getSelection().toString().trim();
+    if (selection.length > 0) submitTokens(selection);
   });
 
   function submitTokens(tokens) {
-      var selected_form = {% if not form_up %} 'vocabulary_entry_form' {% else %} {{ selected_form }} {% endif %}
-      htmx.ajax('POST', '{% url "user-clicks-text" text_id %}', {
+    const selected_form = {% if not form_up %}'vocabulary_entry_form'{% else %}'{{ form_div_context.selected_form }}'{% endif %};
+    htmx.ajax('POST', '{% url "user-clicks-text" text_id %}', {
       target: 'body',
-      values: {
-        form_up: 1,
-        token: tokens,
-        selected_form: selected_form
-      }
+      values: { form_up: 1, token: tokens, selected_form }
     }).catch(() => {});
   }
 </script>
