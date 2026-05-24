@@ -15,6 +15,17 @@
     </script>
 </head>
 <body>
+<nav class="navbar navbar-expand-md">
+    <div id="tabs">
+        <a href="{% url 'index' %}" class="navbar-brand fw-bold">ConlangApp</a>
+        <div class="navbar-nav flex-row gap-1">
+          <a href="{% url 'vocabulary-list' %}" class="button">Vocabulary List</a>
+          <a href="{% url 'phonology-and-glyphs-tab' %}" class="button">Glyphs and Phonology Mappings</a>
+          <a href="{% url 'grammar-tab' %}" class="button">Grammar Notes</a>
+        </div>
+    </div>
+</nav>
+
 <div id="extract_text_master_container">
     {% load hoverable_words %}
     <div id="current_text" style="font-size: 20px; margin-top: 50px">
