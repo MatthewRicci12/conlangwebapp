@@ -26,18 +26,19 @@
     </div>
 </nav>
 
-<div id="extract_text_master_container">
+<div class="d-flex gap-3 p-3" style="min-height: calc(100vh - 56px);" id="extract_text_master_container">
     {% load hoverable_words %}
-    <div id="current_text" style="font-size: 20px; margin-top: 50px">
-    {{ text_content |hoverable_words:params }}
-    </div>
+  <div id="current_text" class="card shadow-sm flex-grow-1 p-4" style="font-size: 1.0625rem; line-height: 1.9; overflow-y: auto;">
+    {{ text_content|hoverable_words:params }}
+  </div>
 
-    {% if form_up %}
-<!--    Context is inherited so probably don't need the with ...  with form_div_context=form_div_context only-->
-        {% include 'partials/current_form.html'%}
-    {% endif %}
+  {% if form_up %}
+  <div style="width: 360px; flex-shrink: 0;">
+    {% include 'partials/current_form.html' %}
+  </div>
+  {% endif %}
+
 </div>
-
 
 <script>
   var container = document.getElementById('current_text');
