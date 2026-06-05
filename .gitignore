@@ -16,7 +16,7 @@ node_modules/
 *.log
 media/
 
-# Environment variables (important — never commit secrets)
+# Environment variables
 .env
 .env.*
 
@@ -24,4 +24,4 @@ media/
 .DS_Store
 Thumbs.db
 .idea
-conlangapp/migrations
+
