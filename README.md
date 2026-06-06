@@ -20,11 +20,17 @@ The project features both a .venv and a docker container, so until it is deploye
 ### .venv route
 There is a requirements.txt, so you can install what you need in a .venv. There are numerous instructions online, but for courtesy:
 Linux instructions
-`python3 -m venv .venv
+```
+python3 -m venv .venv
+
 source .venv/bin/activate
+
 python3 -m pip install -r requirements.txt
+
 python manage.py runserver
-deactivate  # To exit`
+
+deactivate  # To exit
+```
 
 The only real difference with Windows is for the activate step, use `.venv\Scripts\activate` instead, and the requirements.txt install step use `py -m pip install -r requirements.txt`.
 
