@@ -20,17 +20,17 @@ The project features both a .venv and a docker container, so until it is deploye
 ### .venv route
 There is a requirements.txt, so you can install what you need in a .venv. There are numerous instructions online, but for courtesy:
 Linux instructions
-python3 -m venv .venv
+`python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 python manage.py runserver
-deactivate  # To exit
+deactivate  # To exit`
 
-The only real difference with Windows is for the activate step, use .venv\Scripts\activate instead, and the requirements.txt install step use py -m pip install -r requirements.txt.
+The only real difference with Windows is for the activate step, use `.venv\Scripts\activate` instead, and the requirements.txt install step use `py -m pip install -r requirements.txt`.
 
 ### Docker Route
-The only thing that is required to use the docker image is to create your own .env file that is based off of the .env exampel. You can generate a secret key with the following command:
-python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+The only thing that is required to use the docker image is to create your own .env file that is based off of the .env example. You can generate a secret key with the following command:
+`python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'`
 
 Simply copypaste this into the SECRET_KEY field and all CSRF requests and other operations requiring hashing will work.
 
