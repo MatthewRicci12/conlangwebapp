@@ -18,7 +18,6 @@ media/
 
 # Environment variables
 .env
-.env.*
 
 # OS junk
 .DS_Store
