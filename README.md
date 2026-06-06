@@ -18,15 +18,21 @@ Coming from an embedded background, it was great to be able to make a foray into
 The project features both a .venv and a docker container, so until it is deployed, it can be used sandboxed and locally. 
 
 ### .venv route
-Make sure you're in 
-pip install -r requirements.txt
-npm install
-python manage.py startserver
+There is a requirements.txt, so you can install what you need in a .venv. There are numerous instructions online, but for courtesy:
+Linux instructions
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+python manage.py runserver
+deactivate  # To exit
 
-Then just click the URL and conlang away!
+The only real difference with Windows is for the activate step, use .venv\Scripts\activate instead, and the requirements.txt install step use py -m pip install -r requirements.txt.
 
 ### Docker Route
+The only thing that is required to use the docker image is to create your own .env file that is based off of the .env exampel. You can generate a secret key with the following command:
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 
+Simply copypaste this into the SECRET_KEY field and all CSRF requests and other operations requiring hashing will work.
 
 ## Usage
 Start by uploading texts. This is a conlanging app optimized for top-down conlanging as opposed to a-priori conlanging, so throw a bunch of words at it! You can also upload from a file. A list of stored texts will be maintained.
