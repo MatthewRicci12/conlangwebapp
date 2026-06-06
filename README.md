@@ -51,4 +51,5 @@ From here, click the text itself. Click a single word or highlight a string of w
 Link to database diagram (requires lucidchart login): https://lucid.app/lucidchart/57959c10-764d-400c-8314-22905168a14b/edit?viewport_loc=-2701%2C-1404%2C3954%2C2272%2C0_0&invitationId=inv_b9009b8d-4dc6-441f-8724-250e14901b9c
 
 ## Potential Features for Future
-Deployed online in addition to containerization and usage of PostgreSQL
+Deployed online in addition to containerization and usage of PostgreSQL.
+Embedded LaTeX editor for grammar.
