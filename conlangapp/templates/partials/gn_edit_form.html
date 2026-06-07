@@ -1,6 +1,8 @@
-<h1>Edit grammar note</h1>
+<h5 class="fw-bold mb-3">Edit glyph string</h5>
 <form id="edit_gn" onsubmit="submitForm()">
-        {{ form.body }}
-<input type="submit" value="Submit" form="edit_gn">
+  <div class="mb-3">{{ form.body }}</div>
+  <div class="d-flex gap-2">
+    <input type="submit" value="Submit" class="btn btn-primary btn-sm" form="edit_gn">
+    <button type="button" class="btn btn-outline-danger btn-sm" onclick="closeModal()">Close</button>
+  </div>
 </form>
-<button class="btn danger" onclick="closeModal()">Close</button>

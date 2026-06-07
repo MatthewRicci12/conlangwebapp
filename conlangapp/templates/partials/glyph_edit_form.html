@@ -1,8 +1,9 @@
 <!--This should probably use the GlyphForm at some point.-->
-<h1>Edit glyph string</h1>
+<h5 class="fw-bold mb-3">Edit glyph string</h5>
 <form id="edit_glyph" onsubmit="submitForm()">
-  {{ form.glyph_string }}
-  <br>
-  <input type="submit" form="edit_glyph">
+  <div class="mb-3">{{ form.glyph_string }}</div>
+  <div class="d-flex gap-2">
+    <input type="submit" class="btn btn-primary btn-sm" form="edit_glyph">
+    <button type="button" class="btn btn-outline-danger btn-sm" onclick="closeModal()">Close</button>
+  </div>
 </form>
-<button class="btn danger" onclick="closeModal()">Close</button>

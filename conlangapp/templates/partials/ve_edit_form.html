@@ -1,9 +1,15 @@
-<h1>Edit vocabulary entry part of speech or definition</h1>
+<h5 class="fw-bold mb-3">Edit glyph string</h5>
 <form id="edit_ve" onsubmit="submitForm()">
-    <p>Edit part of speech:</p>
+    <div class="mb-3">
+    <label class="form-label fw-medium">Part of speech</label>
     {{ form.part_of_speech }}
-    <p>Edit definition for this vocabulary word:</p>
+    </div>
+    <div class="mb-3">
+    <label class="form-label fw-medium">Definition</label>
     {{ form.definition }}
-    <input type="submit" value="Submit" form="edit_ve">
+    </div>
+    <div class="d-flex gap-2">
+    <input type="submit" value="Submit" class="btn btn-primary btn-sm" form="edit_ve">
+    <button type="button" class="btn btn-outline-danger btn-sm" onclick="closeModal()">Close</button>
+    </div>
 </form>
-<button class="btn danger" onclick="closeModal()">Close</button>
