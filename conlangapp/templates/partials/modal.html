@@ -1,55 +1,37 @@
 <div id="modal">
   <div class="modal-underlay" onclick="closeModal()"></div>
   <div class="modal-content">
-      {% if which_model == "Text" %}
-            {% include 'partials/text_edit_form.html'%}
-      {% elif which_model == "VocabularyEntry" %}
-            {% include 'partials/ve_edit_form.html'%}
-      {% elif which_model == "GrammarNote" %}
-            {% include 'partials/gn_edit_form.html'%}
-      {% elif which_model == "Glyph" %}
-            {% include 'partials/glyph_edit_form.html'%}
-      {% endif %}
+    {% if which_model == "Text" %}
+      {% include 'partials/text_edit_form.html' %}
+    {% elif which_model == "VocabularyEntry" %}
+      {% include 'partials/ve_edit_form.html' %}
+    {% elif which_model == "GrammarNote" %}
+      {% include 'partials/gn_edit_form.html' %}
+    {% elif which_model == "Glyph" %}
+      {% include 'partials/glyph_edit_form.html' %}
+    {% endif %}
   </div>
 </div>
 
 <script>
   function submitForm() {
-    event.preventDefault(); //Ajax competes with native form submission reload action. Likely common AJAX pattern.
+    event.preventDefault();
+    const form = event.target;
+    const dataAsObj = Object.fromEntries(new FormData(form).entries());
 
-    const form = event.target
-    const data = new FormData(form);
-    const values = data.values()
-    const dataAsObj = Object.fromEntries(data.entries());
-
-    var url = null
-    switch ("{{ which_model }}") {
-        case "Text":
-        url = '{% url "index" %}'
-        break;
-
-        case "Glyph":
-        url = '{% url "phonology-and-glyphs-tab" %}'
-        break;
-
-        case "VocabularyEntry":
-        url = '{% url "vocabulary-list" %}'
-        break;
-
-        case "GrammarNote":
-        url = '{% url "grammar-tab" %}'
-        break;
-
-        default:
-        url = ''
-    }
+    const urlMap = {
+      'Text': '{% url "index" %}',
+      'Glyph': '{% url "phonology-and-glyphs-tab" %}',
+      'VocabularyEntry': '{% url "vocabulary-list" %}',
+      'GrammarNote': '{% url "grammar-tab" %}'
+    };
+    const url = urlMap['{{ which_model }}'] || '';
 
     htmx.ajax('POST', url, {
       target: 'body',
-      action: 'update',
       values: {
-        model: "{{ which_model }}",
-        action: "update",
+        model: '{{ which_model }}',
+        action: 'update',
         primary_key: {{ pk }},
         params: JSON.stringify(dataAsObj)
       }
@@ -59,11 +41,8 @@
   function closeModal() {
     const modal = document.getElementById('modal');
     modal.classList.add('closing');
-    setTimeout(() => {
-      modal.remove();
-    }, 300);
+    setTimeout(() => modal.remove(), 200);
   }
 
-  // Open the modal immediately after it's inserted
   document.getElementById('modal').classList.add('open');
 </script>
