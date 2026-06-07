@@ -1,10 +1,22 @@
-<!--CLICKABLE TEXT DIVS-->
-<a href="{% url 'user-clicks-text' text.text_id %}">
-  <div class="text">
-    <h2>{{ text.title }}</h2>
-    <p>{{ text.body }}</p>
+<div class="card shadow-sm mb-3">
+  <div class="card-body">
+    <a href="{% url 'user-clicks-text' text.text_id %}" class="text-decoration-none text-dark">
+      <h2 class="h5 fw-semibold mb-1">{{ text.title }}</h2>
+      <p class="text-secondary mb-2">{{ text.body }}</p>
+    </a>
+    <div class="d-flex gap-2">
+      <button class="btn btn-sm btn-outline-primary"
+        hx-get="{% url 'modal' %}"
+        hx-target="body"
+        hx-vals='{"model": "Text", "action": "update", "primary_key": {{ text.text_id }}}'>
+        Edit
+      </button>
+      <button class="btn btn-sm btn-outline-danger"
+        hx-get="{% url 'index' %}"
+        hx-target="body"
+        hx-vals='{"model": "Text", "action": "delete", "primary_key": {{ text.text_id }}}'>
+        Delete
+      </button>
+    </div>
   </div>
-</a>
-<!--UPDATE/DELETE BUTTONS-->
-<button hx-get="{% url 'modal' %}" hx-target="body" hx-vals='{"model": "Text", "action": "update", "primary_key": {{text.text_id}}}'>Update</button>
-<button hx-get="{% url 'index' %}" hx-target="body" hx-vals='{"model": "Text", "action": "delete", "primary_key": {{text.text_id}}}'>Delete</button>
+</div>
