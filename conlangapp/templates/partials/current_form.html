@@ -14,10 +14,10 @@
                 hx-vals='{"form_up": 1, "token": "{{ form_div_context.token }}", "selected_form": "vocabulary_entry_form"}'>
                 Submit Vocabulary Entry
         </button>
-        <button class="btn btn-sm {% if form_div_context.selected_form == 'vocabulary_entry_form' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+        <button class="btn btn-sm {% if form_div_context.selected_form == 'glyph_form' %}btn-primary{% else %}btn-outline-primary{% endif %}"
                 hx-post="{% url 'user-clicks-text' form_div_context.text_id  %}" hx-target="body" hx-vals='{"form_up": 1, "token": "{{ form_div_context.token }}", "selected_form": "glyph_form"}'>Submit Glyph
         </button>
-        <button class="btn btn-sm {% if form_div_context.selected_form == 'vocabulary_entry_form' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+        <button class="btn btn-sm {% if form_div_context.selected_form == 'grammar_note_form' %}btn-primary{% else %}btn-outline-primary{% endif %}"
                 hx-post="{% url 'user-clicks-text' form_div_context.text_id  %}" hx-target="body" hx-vals='{"form_up": 1, "token": "{{ form_div_context.token }}", "selected_form": "grammar_note_form"}'>Submit Grammar Note
         </button>
     </div>
