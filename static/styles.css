@@ -9,32 +9,6 @@
     cursor: pointer;
 }
 
-#extract_text_master_container {
-    display: flex;
-    flex-direction: row; /* optional, row is the default */
-    background-color: orange;
-}
-
-#current_text {
-    background-color: green;
-    color: white;
-    flex-grow: 1;
-}
-
-#current_form {
-    background-color: blue;
-    flex-grow: 1;
-}
-
-a.button {
-    padding: 1px 6px;
-    border: 1px outset blue;
-    border-radius: 3px;
-    color: red;
-    background-color: green;
-    text-decoration: none;
-}
-
   #modal {
     position: fixed;
     inset: 0;
