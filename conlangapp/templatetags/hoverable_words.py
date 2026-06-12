@@ -11,7 +11,7 @@ def hoverable_words(text, params):
     result = ''
     for token in words:
         if token.strip():
-            result += f'<span class="word"}}\'>{token}</span>'
+            result += f'<span class="word d-inline">{token}</span>'
         else:
             result += token
     return mark_safe(result)

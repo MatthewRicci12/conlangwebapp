@@ -35,7 +35,7 @@
 
 <div class="d-flex gap-3 p-3" style="min-height: calc(100vh - 56px);" id="extract_text_master_container">
     {% load hoverable_words %}
-  <div id="current_text" class="card shadow-sm flex-grow-1 p-4" style="font-size: 1.0625rem; line-height: 1.9; overflow-y: auto;">
+  <div id="current_text" class="card shadow-sm flex-grow-1 p-4" style="font-size: 1.0625rem; line-height: 1.9; overflow-y: auto; display: block;">
     {{ text_content|hoverable_words:params }}
   </div>
 
@@ -61,8 +61,6 @@
 
   </div>
 </div>
-
-
 
 <script>
   var container = document.getElementById('current_text');
