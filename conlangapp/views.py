@@ -78,9 +78,7 @@ def handle_file(request):
         )
         text.save()
 
-        context = {'text': text}
-        response = render(request, 'partials/text_entry.html', context)
-        return response
+        return index(request)
     else:
         return HttpResponse(status=405)
 
