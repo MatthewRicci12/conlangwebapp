@@ -8,6 +8,7 @@
       <button class="btn btn-sm btn-outline-primary"
         hx-get="{% url 'modal' %}"
         hx-target="body"
+        hx-swap="beforeend"
         hx-vals='{"model": "Text", "action": "update", "primary_key": {{ text.text_id }}}'>
         Edit
       </button>

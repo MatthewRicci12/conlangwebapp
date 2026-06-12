@@ -42,6 +42,7 @@
         <div style="display:flex;gap:.375rem">
           <button class="btn btn-ghost btn-icon" title="Edit"
             hx-get="{% url 'modal' %}" hx-target="body"
+            hx-swap="beforeend"
             hx-vals='{"model": "GrammarNote", "action": "update", "primary_key": {{ gn.gn_id }}}'>✏️</button>
           <button class="btn btn-danger btn-icon" title="Delete"
             hx-get="{% url 'grammar-tab' %}" hx-target="body"
