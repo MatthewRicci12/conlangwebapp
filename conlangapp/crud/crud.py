@@ -58,4 +58,9 @@ def update_glyph(params):
 def delete_glyph(params):
     glyph_id = params.get('primary_key')
     glyph_to_delete = Glyph.objects.get(pk=glyph_id)
+
+    for pm in glyph_to_delete.phonology_mappings.all():
+        if pm.glyphs.count() == 1:
+            pm.delete()
+
     glyph_to_delete.delete()

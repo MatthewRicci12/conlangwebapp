@@ -158,6 +158,17 @@ def create_phonology_mapping(request):
 
 # @login_required
 def phonology_and_glyphs_tab(request):
+    if 'primary_key' in request.POST:
+        model = request.POST.get('model', 'Glyph')
+        primary_key = int(request.POST['primary_key'])
+        params = json.loads(request.POST['params']) if 'params' in request.POST else {}
+        crud_router(model, 'update', primary_key, params)
+
+    if 'primary_key' in request.GET:
+        model = request.GET.get('model', 'Glyph')
+        primary_key = int(request.GET['primary_key'])
+        crud_router(model, 'delete', primary_key, {'primary_key': primary_key})
+
     context = {'glyphs': list(Glyph.objects.all())}
 
     currently_selected_glyph_id = None
@@ -173,16 +184,7 @@ def phonology_and_glyphs_tab(request):
         context['currently_selected_glyph_id'] = None
     context['selected_ipa_symbol'] = selected_ipa_symbol
 
-    if 'primary_key' in request.POST:
-        model = request.POST.get('model', 'Glyph')
-        primary_key = int(request.POST['primary_key'])
-        params = json.loads(request.POST['params']) if 'params' in request.POST else {}
-        crud_router(model, 'update', primary_key, params)
 
-    if 'primary_key' in request.GET:
-        model = request.GET.get('model', 'Glyph')
-        primary_key = int(request.GET['primary_key'])
-        crud_router(model, 'delete', primary_key, {'primary_key': primary_key})
 
     return render(request, 'phonology_and_glyphs_tab.html', context)
 
