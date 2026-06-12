@@ -56,12 +56,12 @@
         <span class="glyph-phonemes">—</span>
       {% endif %}
       <div class="glyph-actions">
-        <button class="btn btn-ghost btn-icon" title="Edit"
+        <button class="btn btn-primary" title="Edit"
           hx-get="{% url 'modal' %}" hx-target="body" hx-swap="beforeend"
-          hx-vals='{"model": "Glyph", "action": "update", "primary_key": {{ glyph.glyph_id }}}'>✏️</button>
+          hx-vals='{"model": "Glyph", "action": "update", "primary_key": {{ glyph.glyph_id }}}'>Edit</button>
         <button class="btn btn-danger btn-icon" title="Delete"
           hx-get="{% url 'phonology-and-glyphs-tab' %}" hx-target="body"
-          hx-vals='{"model": "Glyph", "action": "delete", "primary_key": {{ glyph.glyph_id }}}'>🗑️</button>
+          hx-vals='{"model": "Glyph", "action": "delete", "primary_key": {{ glyph.glyph_id }}}'>Delete</button>
       </div>
     </div>
     {% endfor %}
